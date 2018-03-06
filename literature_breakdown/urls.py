@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls import include
+from lit import views
 
 urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^literaturebreakdown/', include('lit.urls')),
+    # above maps any URLs starting
+    # with literaturebreakdown/ to be handled by
+    # the lit application
     url(r'^admin/', admin.site.urls),
-]
+] 

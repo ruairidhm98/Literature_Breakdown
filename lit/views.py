@@ -1,4 +1,5 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -24,3 +25,11 @@ def register(request):
     registered = False
 
     # If it's HTTP POST, we want the info from the form
+=======
+from django.http import HttpResponse
+
+# Create your views here.
+def index(request):
+    context_dict = {}
+    return render(request, 'lit/index.html', context=context_dict)
+>>>>>>> 09c6b25422bf364cf76ed15d1354ab46ee846d5a
