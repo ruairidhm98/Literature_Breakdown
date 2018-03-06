@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-<<<<<<< HEAD
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.gb.backends.sqlite3',
@@ -38,11 +38,8 @@ DATABASES = {
     }
 }
 
-=======
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
->>>>>>> 09c6b25422bf364cf76ed15d1354ab46ee846d5a
-
 
 # Application definition
 
