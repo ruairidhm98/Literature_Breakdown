@@ -13,6 +13,7 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-    context_dict = {}
+    article_list = Article.objects.order_by('-views')[:5]
+    context_dict = {'articles': article_list}
     return render(request, 'lit/index.html', context=context_dict)
 

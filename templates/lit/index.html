@@ -11,6 +11,18 @@
 		<h1>Welcome to Literature Breakdown!</h1>
 
 		<div>
+			{% if articles %}
+			<ul>
+				{% for article in articles %}
+					<li>{{ article.name }}</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				<strong>There are no articles to show.</strong>
+			{% endif %}
+		</div>
+
+		<div>
 			<a href="/lit/about/">About</a><br />
 		</div>
 	</body>
