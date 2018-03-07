@@ -1,29 +1,62 @@
 <!DOCTYPE html>
 
+{% extends 'lit/base.html' %}
 {% load staticfiles %}
 
-<html>
-	<head>
-		<title>Literature Breakdown</title>
-	</head>
+{% block title_block %}
+{% endblock %}
 
-	<body>
-		<h1>Welcome to Literature Breakdown!</h1>
+{% block body_block %}
+	{% if user.is_authenticated %}	
+		<h1 style="text-align:center">Literature Breakdown - Welcome Back</h1>
+	{% else %}
+		<h1 style="text-align:center">Literature Breakdown</h1>
+	{% endif %}
+		
 
-		<div>
-			{% if articles %}
-			<ul>
-				{% for article in articles %}
+	<div>
+		<h2>Browse Categories</h2>
+		{% if categories %}
+		<ul>
+			{% for category in categories %}
+				<a href="{% url 'show_category' %}">
+					<li>{{ category.name }}</li>
+				</a>
+			{% endfor %}
+		</ul>
+		{% else %}
+			<strong>There are no categories to show.</strong>
+		{% endif %}
+	</div>
+
+	<div>
+		<h3>New Analyses</h3>
+		{% if articles %}
+		<ul>
+			{% for article in articles %}
+				<a href="{% url 'show_article' %}">
 					<li>{{ article.name }}</li>
-				{% endfor %}
-			</ul>
-			{% else %}
-				<strong>There are no articles to show.</strong>
-			{% endif %}
-		</div>
+				</a>
+			{% endfor %}
+		</ul>
+		{% else %}
+			<strong>There are no articles to show.</strong>
+		{% endif %}
+	</div>
 
-		<div>
-			<a href="/lit/about/">About</a><br />
-		</div>
-	</body>
-</html>
+	<div>
+		<h3>Trending Analyses</h3>
+		{% if articles %}
+		<ul>
+			{% for article in articles %}
+				<a href="{% url 'show_article' %}">
+					<li>{{ article.name }}</li>
+				</a>
+			{% endfor %}
+		</ul>
+		{% else %}
+			<strong>There are no articles to show.</strong>
+		{% endif %}
+	</div>
+{% endblock %}
+

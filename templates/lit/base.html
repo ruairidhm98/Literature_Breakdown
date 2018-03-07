@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+	<head lang="en">
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="{% static "css\base.css" %}">
+    		<title>Literature Breakdown</title>
+	</head>
+
+	<body>
+		<ul id="navigation_bar">
+			<li class="dropdown">
+    				<a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+    				<div class="dropdown-content">
+      					<a href="#">Link 1</a>
+      					<a href="#">Link 2</a>
+      					<a href="#">Link 3</a>
+    				</div>
+  			</li>
+			<li class="search-container">
+    				<form action="/action_page.php">
+      					<input type="text" placeholder="Search.." name="search">
+      					<button type="submit"><i class="fa fa-search"></i></button>
+    				</form>
+  			</li>
+  			<li><a class="active" href="#index">Literature Breakdown</a></li>
+			
+  			<li style="float:right"><a href="#register">Register</a></li>
+			<li style="float:right"><a href="#login">Login</a></li>
+		</ul>
+
+		<div>
+			{% block body_block %}
+			{% endblock %}
+		</div>
+    	</body>
+</html>
