@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -9,13 +8,15 @@ from lit.models import Member
 from lit.models import Article
 from lit.models import Comment
 from lit.models import Snippet
+from lit.models import Category
 from datetime import datetime
 from lit.webhose_search import run_query
 
 
 def index(request):
     article_list = Article.objects.order_by('-views')[:5]
-    context_dict = {'articles': article_list}
+    category_list = Category.objects.all()
+    context_dict = {'articles': article_list, 'categories': category_list}
     return render(request, 'lit/index.html', context=context_dict)
 
 
