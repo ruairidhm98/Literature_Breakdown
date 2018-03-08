@@ -51,8 +51,8 @@
     	{% if articles %}
     	<ul>
       	{% for article in articles %}
-        	<a href="{% url 'show_article' %}">
-          	<li>{{ article.name }}</li>
+        	<a href="#">
+          	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
@@ -67,8 +67,8 @@
     	{% if articles %}
     	<ul>
       	{% for article in articles %}
-        	<a href="{% url 'show_article' %}">
-          	<li>{{ article.name }}</li>
+        	<a href="#">
+          	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
