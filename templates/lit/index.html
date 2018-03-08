@@ -7,106 +7,77 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="container-fluid">
-      <div class="row">
-        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+	<nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
+              <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Reports</a>
+              <a class="nav-link" href="#">FAQ</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Analytics</a>
+              <a class="nav-link" href="#">New</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
+              <a class="nav-link" href="#">Trending</a>
             </li>
-          </ul>
-
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item</a>
+	    <li class="nav-item">
+              <h2 style="text-align:center">Browse Categories</h1>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
-
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
+	    {% if categories %}
+	      {% for category in categories %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'show_category' %}">{{ category.name }}</a>
+                </li>
+	       {% endfor %}
+	     {% else %}
+              <strong>There are no categories to show.</strong>
+	    {% endif %}
           </ul>
         </nav>
-      </div>
-    </div>
-		
 
 	<div>
 	{% if user.is_authenticated %}	
-		<h1 style="text-align:center">Literature Breakdown - Welcome Back</h1>
+		<h1 class="display-3">Literature Breakdown - Welcome Back</h1>
 	{% else %}
-		<h1 style="text-align:center">Literature Breakdown</h1>
+		<h1 class="display-3">Literature Breakdown</h1>
 	{% endif %}
 	</div>
 
-	<div>
-		<h2>Browse Categories</h2>
-		{% if categories %}
-		<ul>
-			{% for category in categories %}
-				<a href="{% url 'show_category' %}">
-					<li>{{ category.name }}</li>
-				</a>
-			{% endfor %}
-		</ul>
-		{% else %}
-			<strong>There are no categories to show.</strong>
-		{% endif %}
+	<div class="row marketing">
+  	  <div class="col-lg-6">
+    	<h4>New Analyses</h4>
+    	<p>
+    	{% if articles %}
+    	<ul>
+      	{% for article in articles %}
+        	<a href="{% url 'show_article' %}">
+          	<li>{{ article.name }}</li>
+        	</a>
+      	{% endfor %}
+    	</ul>
+      	{% else %}
+      	<strong>There are no articles to show.</strong>
+      	{% endif %}
+    	</p>
+  	</div>
+  	<div class="col-lg-6">
+    	<h4>Trending Analyses</h4>
+  	<p>
+    	{% if articles %}
+    	<ul>
+      	{% for article in articles %}
+        	<a href="{% url 'show_article' %}">
+          	<li>{{ article.name }}</li>
+        	</a>
+      	{% endfor %}
+    	</ul>
+      	{% else %}
+      	<strong>There are no articles to show.</strong>
+      	{% endif %}
+    	</p>
+  	</div>
 	</div>
 
-	<div>
-		<h3>New Analyses</h3>
-		{% if articles %}
-		<ul>
-			{% for article in articles %}
-				<a href="{% url 'show_article' %}">
-					<li>{{ article.name }}</li>
-				</a>
-			{% endfor %}
-		</ul>
-		{% else %}
-			<strong>There are no articles to show.</strong>
-		{% endif %}
-	</div>
-
-	<div>
-		<h3>Trending Analyses</h3>
-		{% if articles %}
-		<ul>
-			{% for article in articles %}
-				<a href="{% url 'show_article' %}">
-					<li>{{ article.name }}</li>
-				</a>
-			{% endfor %}
-		</ul>
-		{% else %}
-			<strong>There are no articles to show.</strong>
-		{% endif %}
-	</div>
 {% endblock %}
 
