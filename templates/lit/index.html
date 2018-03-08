@@ -4,9 +4,12 @@
 {% load staticfiles %}
 
 {% block title_block %}
-{% endblock %}
+{% endblock %}
+
 
 {% block body_block %}
+
+
 	<nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
@@ -22,8 +25,8 @@
               <a class="nav-link" href="#">Trending</a>
             </li>
 	    <li class="nav-item">
-              <h2 style="text-align:center">Browse Categories</h1>
-            </li>
+			<h2 style="text-align:center">Browse Categories</h2>
+		</li>
 	    {% if categories %}
 	      {% for category in categories %}
                 <li class="nav-item">
@@ -51,8 +54,8 @@
     	{% if articles %}
     	<ul>
       	{% for article in articles %}
-        	<a href="{% url 'show_article' %}">
-          	<li>{{ article.name }}</li>
+        	<a href="#">
+          	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
@@ -61,14 +64,15 @@
       	{% endif %}
     	</p>
   	</div>
-  	<div class="col-lg-6">
+  	<div class="col-lg-6">
+
     	<h4>Trending Analyses</h4>
   	<p>
     	{% if articles %}
     	<ul>
       	{% for article in articles %}
-        	<a href="{% url 'show_article' %}">
-          	<li>{{ article.name }}</li>
+        	<a href="#">
+          	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
@@ -79,5 +83,6 @@
   	</div>
 	</div>
 
-{% endblock %}
+{% endblock %}
+
 

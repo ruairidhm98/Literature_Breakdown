@@ -1,6 +1,5 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User
 
 
 class Member(models.Model):
@@ -27,6 +26,7 @@ class Article(models.Model):
     views = models.IntegerField(default=0)
     title = models.CharField(max_length=128)
     analysis = models.CharField(max_length=2500, unique=False)
+    category = models.CharField(max_length=50)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
@@ -49,8 +49,14 @@ class Comment(models.Model):
 class Snippet(models.Model):
     title = models.ForeignKey(Article)
     page = models.IntegerField()
-    passage = models.CharField(max_length=300, unique=False)
-    analysis = models.CharField(max_length=400, unique=False)
+    passage = models.CharField(max_length=500, unique=False)
+    analysis = models.CharField(max_length=1000, unique=False)
 
     def __str__(self):
         return self.analysis
+
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=False)
+
+    def __str__(self):
+        return self.name
