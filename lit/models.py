@@ -12,6 +12,10 @@ class Member(models.Model):
     profile_pic = models.ImageField(upload_to='profile_images', blank=True)
     slug = models.SlugField()
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.username)
+        super(Member, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.username
 
@@ -22,6 +26,12 @@ class Article(models.Model):
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
     title = models.CharField(max_length=128)
+    analysis = models.CharField(max_length=2500, unique=False)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Article, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
