@@ -14,9 +14,10 @@ from lit.webhose_search import run_query
 
 
 def index(request):
-    article_list = Article.objects.order_by('-views')[:5]
+    article_list_trending = Article.objects.order_by('-rating')[:5]
+    article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
-    context_dict = {'articles': article_list, 'categories': category_list}
+    context_dict = {'articles_new': article_list_new,'articles_trending' : article_list_trending, 'categories': category_list}
     return render(request, 'lit/index.html', context=context_dict)
 
 
@@ -171,3 +172,24 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('index'))
+
+def show_profile(request, user_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find an username slug with the given name?
+        # If we can't, the .get() method rasises a DoesNotExist exception.
+        # So the .get() method returns one model instance or raises and exception.
+        member = Member.objects.get(slug=user_name_slug)
+
+        # We also add the article object from
+        # the database to the context dictionary.
+        # We'll use this in the template to verify that the article exists.
+        context_dict['Member'] = member
+    except Member.DoesNotExist:
+        # We get here if we didn't find the specified article.
+        # Don't do anything -
+        # the template will display the "no category" message for us.
+        context_dict['Member'] = None
+
+    return render(request, 'lit/profile.html', context_dict)
