@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+{% extends 'lit/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+
+{% block body_block %}
+
+	<div class="row">
+	    <div class="col-4"><h1>{{ article.title }}</h1></div>
+            <div class="col-4"><h1>{{ article.date_published }}</h1></div>
+	    <div class="col-4"><h1>{{ article.category }}</h1></div>
+	</div>
+
+{% endblock %}
+
+
