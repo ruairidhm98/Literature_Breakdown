@@ -28,6 +28,7 @@ class Article(models.Model):
     analysis = models.CharField(max_length=2500, unique=False)
     category = models.CharField(max_length=50)
     slug = models.SlugField()
+    img = models.ImageField(upload_to='profile_images', blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -54,6 +55,7 @@ class Snippet(models.Model):
 
     def __str__(self):
         return self.analysis
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=False)
