@@ -25,6 +25,7 @@ class Article(models.Model):
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
     title = models.CharField(max_length=128)
+    rating = models.ForeignKey(Comment.rating)
     analysis = models.CharField(max_length=2500, unique=False)
     category = models.CharField(max_length=50)
     slug = models.SlugField()
