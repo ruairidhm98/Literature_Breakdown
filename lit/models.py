@@ -25,7 +25,7 @@ class Article(models.Model):
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
     title = models.CharField(max_length=128)
-    rating = models.ForeignKey(Comment.rating)
+    rating = models.ForeignKey(Comment)
     analysis = models.CharField(max_length=2500, unique=False)
     category = models.CharField(max_length=50)
     slug = models.SlugField()
@@ -43,6 +43,7 @@ class Comment(models.Model):
     user_comment = models.CharField(max_length=128, unique=False)
     user = models.ForeignKey(Member)
     rating = models.FloatField(max_length=5.0)
+    article = models.ForeignKey(Article)
 
     def __str__(self):
         return self.user_comment

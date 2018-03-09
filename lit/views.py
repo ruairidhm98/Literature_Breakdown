@@ -42,16 +42,22 @@ def show_article(request, article_name_slug):
         # If we can't, the .get() method rasises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises and exception.
         article = Article.objects.get(slug=article_name_slug)
-        
+        comments = Comment.objects.filter(article=article)
+        snippets = Comment.objects.filter(title=article)
+
         # We also add the article object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the article exists.
         context_dict['article'] = article
+        context_dict['comments'] = comments
+        context_dict['snippets'] = snippets
     except Article.DoesNotExist:
         # We get here if we didn't find the specified article.
         # Don't do anything -
         # the template will display the "no category" message for us.
         context_dict['article'] = None
+        context_dict['comments'] = None
+        context_dict['snippets'] = None
         
     return render(request, 'lit/article.html', context_dict)
 
@@ -181,15 +187,18 @@ def show_profile(request, user_name_slug):
         # If we can't, the .get() method rasises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises and exception.
         member = Member.objects.get(slug=user_name_slug)
+        articles = Article.objects.filter(author=member)
 
         # We also add the article object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the article exists.
-        context_dict['Member'] = member
+        context_dict['member'] = member
+        context_dict['articles'] = articles
     except Member.DoesNotExist:
         # We get here if we didn't find the specified article.
         # Don't do anything -
         # the template will display the "no category" message for us.
-        context_dict['Member'] = None
+        context_dict['member'] = None
+        context_dict['articles'] = None
 
     return render(request, 'lit/profile.html', context_dict)
