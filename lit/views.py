@@ -14,7 +14,8 @@ from lit.webhose_search import run_query
 
 
 def index(request):
-    article_list_trending = Article.objects.order_by('-rating')[:5]
+    #article_list_trending = Article.objects.order_by('-rating')[:5]
+    article_list_trending = Article.objects.order_by('title')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
     context_dict = {'articles_new': article_list_new,
@@ -46,7 +47,7 @@ def show_article(request, article_name_slug):
         # So the .get() method returns one model instance or raises and exception.
         article = Article.objects.get(slug=article_name_slug)
         comments = Comment.objects.filter(article=article)
-        snippets = Comment.objects.filter(title=article)
+        snippets = Snippet.objects.filter(title=article)
 
         # We also add the article object from
         # the database to the context dictionary.

@@ -8,17 +8,53 @@
 
 
 {% block body_block %}
-
 	<div class="row">
+	<div class="col-md-4">
 		<img src="/media/profile_images/{{ article.img }}"
 			 width="100"
 			 height="100"
 			 alt="" />
-	    <div class="col-4"><h1>{{ article.title }}</h1></div>
-		<div class="col-4"><h1>{{ article.date_published }}</h1></div>
-	    <div class="col-4"><h1>{{ article.category }}</h1></div>
 	</div>
+	<div class="col-md-8">
+		<div class="row"><div class="col-md-3"></div></div><div class="row"><div class="col-md-3"></div></div>
+		<div class="row">
+			<div class="col-md-3"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3"><h4>{{ article.title }}</h4></div>
+			<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+			<div class="col-md-3"><h4>{{ article.category }}</h4></div>
+			<div class="col-md-3"><h4>Rating</h4></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3"><h4>Book Title</h4></div>
+			<div class="col-md-3"><h4>Author</h4></div>
+			<div class="col-md-3"><h4>Publisher</h4></div>
+			<div class="col-md-3"><h4>Add to Favourites</h4></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3"><h4>Date Published</h4></div>
+			<div class="col-md-3"><h4>Pages</h4></div>
+		</div>
+	</div>
+	</div>
+	
+	<div class="row"><div class="col-md-3"></div></div><div class="row"><div class="col-md-3"></div></div>
 
+	<div>
+		<h1 style="text-align:center">General Analysis</h1>
+		<p style="text-align:center">{{ article.analysis}}</p>
+	</div>
+	
+	<div>
+		<h1 style="text-align:center">Snippets</h1>
+		
+	</div>
+	
+	<div>
+		<h1 style="text-align:center">Comments</h1>
+		
+	</div>
 {% endblock %}
 
 
