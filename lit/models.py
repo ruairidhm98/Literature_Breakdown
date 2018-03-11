@@ -8,7 +8,7 @@ class Member(models.Model):
     num_articles = models.IntegerField(default=0)
     name = models.CharField(max_length=128, unique=False)
     email = models.EmailField()
-    profile_pic = models.ImageField(upload_to='profile_images', blank=True)
+    profile_pic = models.ImageField(upload_to='user_pictures', blank=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
@@ -25,7 +25,6 @@ class Article(models.Model):
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
     title = models.CharField(max_length=128)
-    rating = models.ForeignKey(Comment)
     analysis = models.CharField(max_length=2500, unique=False)
     category = models.CharField(max_length=50)
     slug = models.SlugField()

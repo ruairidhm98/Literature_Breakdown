@@ -17,7 +17,8 @@ def index(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
-    context_dict = {'articles_new': article_list_new,'articles_trending' : article_list_trending, 'categories': category_list}
+    context_dict = {'articles_new': article_list_new,'articles_trending' : article_list_trending,
+                    'categories': category_list}
     return render(request, 'lit/index.html', context=context_dict)
 
 
@@ -31,6 +32,7 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'lit/search.html', {'result_list': result_list})
+
 
 def show_article(request, article_name_slug):
     # Create a context dictionary in which we can pass
@@ -60,6 +62,7 @@ def show_article(request, article_name_slug):
         context_dict['snippets'] = None
         
     return render(request, 'lit/article.html', context_dict)
+
 
 def register(request):
     # A boolean value for telling the template
@@ -178,6 +181,7 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('index'))
+
 
 def show_profile(request, user_name_slug):
     context_dict = {}
