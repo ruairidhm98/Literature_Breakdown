@@ -29,6 +29,7 @@ class Article(models.Model):
     category = models.CharField(max_length=50)
     slug = models.SlugField()
     img = models.ImageField(upload_to='profile_images', blank=True)
+    rating = models.FloatField(max_length=5.0, default=0.0)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
