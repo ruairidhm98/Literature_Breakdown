@@ -55,16 +55,16 @@
   	  <div class="col-lg-6">
     	<h4>New Analyses</h4>
     	<p>
-    	{% if articles %}
+    	{% if articles_new %}
     	<ul>
-      	{% for article in articles %}
+      	{% for article in articles_new %}
         	<a href="{% url 'show_article' article.slug %}">
           	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
       	{% else %}
-      	<strong>There are no articles to show.</strong>
+      	<strong>There are no new articles to show.</strong>
       	{% endif %}
         </p>
   	  </div>
@@ -72,16 +72,16 @@
 
     	<h4>Trending Analyses</h4>
   	<p>
-    	{% if articles %}
+    	{% if articles_trending %}
     	<ul>
-      	{% for article in articles %}
+      	{% for article in articles_trending %}
         	<a href="{% url 'show_article' article.slug %}">
           	<li>{{ article.title }}</li>
         	</a>
       	{% endfor %}
     	</ul>
       	{% else %}
-      	<strong>There are no articles to show.</strong>
+      	<strong>There are no trending articles to show.</strong>
       	{% endif %}
     </p>
   	</div>

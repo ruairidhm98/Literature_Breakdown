@@ -17,7 +17,8 @@ def index(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
-    context_dict = {'articles_new': article_list_new,'articles_trending' : article_list_trending,
+    context_dict = {'articles_new': article_list_new,
+                    'articles_trending' : article_list_trending,
                     'categories': category_list}
     return render(request, 'lit/index.html', context=context_dict)
 
