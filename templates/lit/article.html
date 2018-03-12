@@ -8,53 +8,86 @@
 
 
 {% block body_block %}
-	<div class="row">
-	<div class="col-md-4">
-		<img src="/media/profile_images/{{ article.img }}"
-			 width="100"
-			 height="100"
-			 alt="" />
-	</div>
-	<div class="col-md-8">
-		<div class="row"><div class="col-md-3"></div></div><div class="row"><div class="col-md-3"></div></div>
-		<div class="row">
-			<div class="col-md-3"></div>
+	<div class="row" style="padding-top:30px;">
+		<div class="col-md-3">
+			<img src="{{ MEDIA_URL }}{{ article.img }}"
+				 width="300"
+				 height="400"
+				 alt="Cover" />
 		</div>
-		<div class="row">
-			<div class="col-md-3"><h4>{{ article.title }}</h4></div>
-			<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
-			<div class="col-md-3"><h4>{{ article.category }}</h4></div>
-			<div class="col-md-3"><h4>Rating</h4></div>
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-10"><h1 class="display-3">{{ article.title }}</h1></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
+				{% if user.is_authenticated %}	
+					<div class="col-md-3"><h4>Add to Favourites</h4></div>
+				{% endif %}
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ article.category }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.book }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.author }}</h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;"> 
+				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-3"><h4>Book Title</h4></div>
-			<div class="col-md-3"><h4>Author</h4></div>
-			<div class="col-md-3"><h4>Publisher</h4></div>
-			<div class="col-md-3"><h4>Add to Favourites</h4></div>
-		</div>
-		<div class="row">
-			<div class="col-md-3"><h4>Date Published</h4></div>
-			<div class="col-md-3"><h4>Pages</h4></div>
-		</div>
-	</div>
 	</div>
 	
-	<div class="row"><div class="col-md-3"></div></div><div class="row"><div class="col-md-3"></div></div>
-
-	<div>
+	<div style="padding-top:30px;">
 		<h1 style="text-align:center">General Analysis</h1>
 		<p style="text-align:center">{{ article.analysis}}</p>
 	</div>
 	
-	<div>
+	{% if snippets %}
+	<div style="padding-top:30px;">
 		<h1 style="text-align:center">Snippets</h1>
-		
+		{% for snippet in snippets %}
+		<div class="row" style="padding-top:10px;">
+			<div class="col">
+			<h4 style="text-align:center">{{ snippet.title }} on page: {{ snippet.page }}</h4>
+			</div>
+		</div>
+		<div class="row" style="padding-top:10px;">
+			<div class="col-md-6">
+				<h4 style="text-align:center">Passage</h4>
+				<div class="row" style="padding-top:10px;">
+					<p style="text-align:left">{{ snippet.passage }}</p>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h4 style="text-align:center">Analysis</h4>
+				<div class="row" style="padding-top:10px;">
+					<p style="text-align:right">{{ snippet.analysis }}</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
 	</div>
+	{% endif %}
 	
-	<div>
+	{% if comments %}
+	<div style="padding-top:30px;">
 		<h1 style="text-align:center">Comments</h1>
-		
+		{% for comment in comments %}
+		<div class="row" style="padding-top:10px;">
+			<div class="col-md-4">
+				<h4 style="text-align:center">{{ comment.user }}</h4>
+				<div class="row" style="padding-top:10px;">
+					<p style="text-align:center">{{ comment.rating }}</p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<p style="text-align:center">{{ comment.user_comment }}</p>
+			</div>
+		</div>
+		{% endfor %}
 	</div>
+	{% endif %}
+	
 {% endblock %}
 
 
