@@ -17,13 +17,13 @@
 			<h2 style="text-align:center">Browse Site</h2>
 			</li>
 				<li class="nav-item">
-				  <a class="nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+				  <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item">
 				  <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
 				</li>
 				<li class="nav-item">
-				  <a class="nav-link" href="{% url 'new' %}">New</a>
+				  <a class="nav-link active" href="{% url 'new' %}">New</a>
 				</li>
 				<li class="nav-item">
 				  <a class="nav-link" href="{% url 'trending' %}">Trending</a>
@@ -43,18 +43,9 @@
 			{% endif %}
 			  </ul>
 			</nav>
-
-		<div>
-		{% if user.is_authenticated %}	
-			<h1 class="display-3">Literature Breakdown - Welcome Back</h1>
-		{% else %}
-			<h1 class="display-3">Literature Breakdown</h1>
-		{% endif %}
-		</div>
-
+			
 		<div class="row marketing">
-		  <div class="col-lg-6">
-			<h4>New Analyses</h4>
+		  <div class="col-lg-8">
 			<p>
 			{% if articles_new %}
 			<ul>
@@ -69,23 +60,6 @@
 			{% endif %}
 			</p>
 		  </div>
-		<div class="col-lg-6">
-
-			<h4>Trending Analyses</h4>
-		<p>
-			{% if articles_trending %}
-			<ul>
-			{% for article in articles_trending %}
-				<a href="{% url 'show_article' article.slug %}">
-				<li>{{ article.title }}</li>
-				</a>
-			{% endfor %}
-			</ul>
-			{% else %}
-			<strong>There are no trending articles to show.</strong>
-			{% endif %}
-		</p>
-		</div>
 		</div>
 
 	</div>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+{% extends 'lit/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+
+{% block body_block %}
+	<h1 class="display-3">Login to Literature Breakdown</h1>
+	{% if error_message %}
+		<strong>{{ error_message }}</strong>
+	{% endif %}
+	<form id="login_form" method="post" action="{% url 'login' %}">
+		{% csrf_token %}
+		Username: <input type="text" name="username" value="" size="50" />
+		<br />
+		Password: <input type="password" name="password" value="" size="50" />
+		<br />
+		<input type="submit" value="submit" />
+	</form>
+	
+{% endblock %}
+
+
+

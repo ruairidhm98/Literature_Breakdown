@@ -4,11 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from lit.models import Member
-from lit.models import Article
-from lit.models import Comment
-from lit.models import Snippet
-from lit.models import Category
+from lit.models import Member, Article, Comment, Snippet, Category
+from lit.forms import UserForm, UserProfileForm
 from datetime import datetime
 from lit.webhose_search import run_query
 
@@ -121,7 +118,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render(request,
-                  'rango/register.html',
+                  'lit/register.html',
                   {'user_form': user_form,
                    'profile_form': profile_form,
                    'registered': registered})
@@ -172,7 +169,7 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render(request, 'rango/login.html', {})
+        return render(request, 'lit/login.html', {})
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
@@ -209,7 +206,9 @@ def show_profile(request, user_name_slug):
     return render(request, 'lit/profile.html', context_dict)
 
 def faq(request):
-    return render(request, 'lit/faq.html')
+    category_list = Category.objects.all()
+    context_dict = {'categories': category_list}
+    return render(request, 'lit/faq.html', context_dict)
 
 def new_articles(request):
     article_list_new = Article.objects.order_by('date_published')[:5]
@@ -224,3 +223,34 @@ def trending_articles(request):
     context_dict = {'articles_trending' : article_list_trending,
                     'categories': category_list}
     return render(request, 'lit/trending.html', context=context_dict)
+
+def show_category(request, category_name_slug):
+    # Create a context dictionary in which we can pass
+    # to the template rendering enginge.
+    context_dict = {}
+
+    try:
+        # Can we find a category name slug with the given name?
+        # If we can't, the .get() method rasises a DoesNotExist exception.
+        # So the .get() method returns one model instance or raises and exception.
+        category = Category.objects.get(slug=category_name_slug)
+
+        # Retrieve all of the associated pages.
+        # Note that filter() will return a list of page objects or an empty list
+        articles = Article.objects.filter(category=category)
+
+        # Adds our results list to the template context under name pages.
+        context_dict['articles'] = articles
+
+        # We also add the category object from
+        # the database to the context dictionary.
+        # We'll use this in the template to verify that the category exists.
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        # We get here if we didn't find the specified category.
+        # Don't do anything -
+        # the template will display the "no category" message for us.
+        context_dict['articles'] = None
+        context_dict['category'] = None
+        
+    return render(request, 'lit/category.html', context_dict)
