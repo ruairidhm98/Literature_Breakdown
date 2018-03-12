@@ -12,5 +12,8 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
+    url(r'^faq/$', views.faq, name='faq'),
+    url(r'^new/$', views.new_articles, name='new'),
+    url(r'^trending/$', views.trending_articles, name='trending'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

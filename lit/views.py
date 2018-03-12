@@ -14,8 +14,7 @@ from lit.webhose_search import run_query
 
 
 def index(request):
-    #article_list_trending = Article.objects.order_by('-rating')[:5]
-    article_list_trending = Article.objects.order_by('title')[:5]
+    article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
     context_dict = {'articles_new': article_list_new,
@@ -208,3 +207,20 @@ def show_profile(request, user_name_slug):
         context_dict['articles'] = None
 
     return render(request, 'lit/profile.html', context_dict)
+
+def faq(request):
+    return render(request, 'lit/faq.html')
+
+def new_articles(request):
+    article_list_new = Article.objects.order_by('date_published')[:5]
+    category_list = Category.objects.all()
+    context_dict = {'articles_new': article_list_new,
+                    'categories': category_list}
+    return render(request, 'lit/new.html', context=context_dict)
+
+def trending_articles(request):
+    article_list_trending = Article.objects.order_by('-rating')[:5]
+    category_list = Category.objects.all()
+    context_dict = {'articles_trending' : article_list_trending,
+                    'categories': category_list}
+    return render(request, 'lit/trending.html', context=context_dict)
