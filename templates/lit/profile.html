@@ -26,17 +26,16 @@
 				<div class="col-md-10"><h1 class="display-3">{{ selecteduser.username }}</h1></div>
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-6"><h4>{{ selecteduser.email }}</h4></div>
-				<div class="col-md-6"><h4>{{ selecteduser.first_name }} {{ selecteduser.last_name }}</h4></div>
+				<div class="col-md-4"><h4>{{ selecteduser.email }}</h4></div>
+				<div class="col-md-4"><h4 style="text-align: center">{{ selecteduser.first_name }} {{ selecteduser.last_name }}</h4></div>
+				<div class="col-md-4"><h4 style="text-align: right">{{ userprofile.website }}</h4></div>
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-3"><h4>{{ userprofile.website }}</h4></div>
-				<div class="col-md-3"><h4>{{ selecteduser.date_joined }}</h4></div>
-				<div class="col-md-3"><h4>{{ selecteduser.last_login }}</h4></div>
-				<div class="col-md-3"><h4>{{ userprofile.num_articles }}</h4></div>
+				<div class="col-md-6"><h4>Joined: {{ selecteduser.date_joined }}</h4></div>
+				<div class="col-md-6"><h4>Last Seen: {{ selecteduser.last_login }}</h4></div>
 			</div>
 			<div class="row" style="padding-top:30px;"> 
-				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+				<div class="col-md-12"><h4>Articles Written: {{ userprofile.num_articles }}</h4></div>
 			</div>
 		</div>
 	</div>
