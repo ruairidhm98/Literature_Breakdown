@@ -5,7 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+<<<<<<< HEAD
+from django import forms
+from django.contrib.auth.models import User
+from lit.models import *
+from lit.forms import *
+from lit.models import Member, Article, Comment, Snippet, Category
+=======
 from lit.models import Member, Article, Comment, Snippet, Category 
+>>>>>>> aa64645052f3668d6cd4895f9715a0ecd55394c3
 from lit.forms import UserForm, UserProfileForm
 from datetime import datetime
 from lit.webhose_search import run_query
@@ -208,10 +216,12 @@ def show_profile(request, user_name_slug):
 
     return render(request, 'lit/profile.html', context_dict)
 
+
 def faq(request):
     category_list = Category.objects.all()
     context_dict = {'categories': category_list}
     return render(request, 'lit/faq.html', context_dict)
+
 
 def new_articles(request):
     article_list_new = Article.objects.order_by('date_published')[:5]
@@ -219,6 +229,7 @@ def new_articles(request):
     context_dict = {'articles_new': article_list_new,
                     'categories': category_list}
     return render(request, 'lit/new.html', context=context_dict)
+
 
 def trending_articles(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]

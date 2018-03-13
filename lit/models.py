@@ -2,25 +2,17 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-class Member(models.Model):
-    username = models.CharField(max_length=20, unique=True)
-    password = models.CharField(max_length=15)
-    num_articles = models.IntegerField(default=0)
-    name = models.CharField(max_length=128, unique=False)
-    email = models.EmailField()
-    profile_pic = models.ImageField(upload_to='user_pictures', blank=True)
-    slug = models.SlugField()
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.username)
-        super(Member, self).save(*args, **kwargs)
+class Member(models.Model):
+    user = models.OneToOneField(User)
+    picture = models.ImageField(upload_to='user_pictures', blank=True)
+    name = models.CharField(max_length=30, unique=False)
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class Article(models.Model):
-    author = models.ForeignKey(Member)
     date_published = models.CharField(max_length=8, unique=False)
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
@@ -41,7 +33,6 @@ class Article(models.Model):
 
 class Comment(models.Model):
     user_comment = models.CharField(max_length=128, unique=False)
-    user = models.ForeignKey(Member)
     rating = models.FloatField(max_length=5.0)
     article = models.ForeignKey(Article)
 
