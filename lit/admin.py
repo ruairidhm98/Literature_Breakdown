@@ -1,5 +1,7 @@
 from django.contrib import admin
 from lit.models import Article, Comment, Snippet, Category, UserProfile
+from lit.models import *
+
 # Register your models here.
 
 admin.site.register(Article)
