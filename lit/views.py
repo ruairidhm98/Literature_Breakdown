@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from lit.models import Member, Article, Comment, Snippet, Category
+from lit.models import Member, Article, Comment, Snippet, Category 
 from lit.forms import UserForm, UserProfileForm
 from datetime import datetime
 from lit.webhose_search import run_query
@@ -154,7 +155,7 @@ def user_login(request):
                 return HttpResponseRedirect(reverse('index'))
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your Rango account is disabled.")
+                return HttpResponse("Your Literature Breakdown account is disabled.")
         else:
             user = User.objects.filter(username=username)
             if user:
@@ -163,7 +164,7 @@ def user_login(request):
                 context_dict = {'error_message' : "Invalid username!"}
             # Bad login details were provided. So we can't log the user in.
             print("Invalid login details: {0}, {1}".format(username, password))
-            return render(request, 'rango/login.html', context_dict)
+            return render(request, 'lit/login.html', context_dict)
             #return HttpResponse("Invalid login details supplied.")
 
     # The request is not a HTTP POST, so display the login form.
