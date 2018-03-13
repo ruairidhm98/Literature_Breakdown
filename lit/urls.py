@@ -11,13 +11,12 @@ urlpatterns = [
         views.show_article, name='show_article'),
     url(r'^category/(?P<category_name_slug>[\w\-]+)/$',
         views.show_category, name='show_category'),
-     url(r'^profile/(?P<profile_name_slug>[\w\-]+)/$',
-        views.show_profile, name='show_profile'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^new/$', views.new_articles, name='new'),
     url(r'^trending/$', views.trending_articles, name='trending'),
+    url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

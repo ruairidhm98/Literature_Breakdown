@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+{% extends 'lit/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}{{ user.username }} Profile{% endblock %}
+
+
+{% block body_block %}
+	<div class="row" style="padding-top:30px;">
+		<div class="col-md-3">
+			{% if userprofile.picture %}
+			<img src="{{ MEDIA_URL }}{{ userprofile.picture }}"
+				 width="300"
+				 height="300"
+				 alt={{ user.username }} />
+			{% else %}
+			<img src="http://lorempixel.com/300/300/people/"
+				 width="300"
+				 height="300"
+				 alt={{ user.username }} />
+			{% endif %}
+		</div>
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-10"><h1 class="display-3">{{ selecteduser.username }}</h1></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ selecteduser.email }}</h4></div>
+				<div class="col-md-3"><h4>{{ selecteduser.first_name }}</h4></div>
+				<div class="col-md-3"><h4>{{ selecteduser.last_name }}</h4></div>
+				<div class="col-md-3"><h4>{{ selecteduser.website }}</h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ selecteduser.date_joined }}</h4></div>
+				<div class="col-md-3"><h4>{{ selecteduser.last_login }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.author }}</h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;"> 
+				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+

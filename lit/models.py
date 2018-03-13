@@ -14,8 +14,8 @@ class UserProfile(models.Model):
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.username)
-        super(Member, self).save(*args, **kwargs)
+        self.slug = slugify(self.user.username)
+        super(UserProfile, self).save(*args, **kwargs)
 
     # Override the __unicode__() method to return out something meaningful!
     # Remember if you use Python 2.72x, define __unicode__ too!

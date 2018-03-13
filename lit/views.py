@@ -24,6 +24,7 @@ def index(request):
 def search(request):
 
     result_list = []
+    context_dict = {}
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -183,30 +184,25 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('index'))
 
-
-def show_profile(request, user_name_slug):
-    context_dict = {}
-
+@login_required
+def profile(request, username):
     try:
-        # Can we find an username slug with the given name?
-        # If we can't, the .get() method rasises a DoesNotExist exception.
-        # So the .get() method returns one model instance or raises and exception.
-        member = Member.objects.get(slug=user_name_slug)
-        articles = Article.objects.filter(author=member)
-
-        # We also add the article object from
-        # the database to the context dictionary.
-        # We'll use this in the template to verify that the article exists.
-        context_dict['member'] = member
-        context_dict['articles'] = articles
-    except Member.DoesNotExist:
-        # We get here if we didn't find the specified article.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
-        context_dict['member'] = None
-        context_dict['articles'] = None
-
-    return render(request, 'lit/profile.html', context_dict)
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+    
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('profile', user.username)
+        else:
+            print(form.errors)
+    
+    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'form': form})
 
 def faq(request):
     category_list = Category.objects.all()
