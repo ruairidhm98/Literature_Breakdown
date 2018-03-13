@@ -28,8 +28,10 @@ def search(request):
         query = request.POST['query'].strip()
         if query:
             result_list = run_query(query)
+            context_dict = {'result_list': result_list,
+                    'query' : query}
 
-    return render(request, 'lit/search.html', {'result_list': result_list})
+    return render(request, 'lit/search.html', context_dict)
 
 
 def show_article(request, article_name_slug):
