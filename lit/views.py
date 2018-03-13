@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from lit.models import Member, Article, Comment, Snippet, Category 
+from lit.models import *
 from lit.forms import UserForm, UserProfileForm
 from datetime import datetime
 from lit.webhose_search import run_query

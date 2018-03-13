@@ -1,8 +1,7 @@
 from django.contrib import admin
-from lit.models import Member, Article, Comment, Snippet, Category, UserProfile
+from lit.models import Article, Comment, Snippet, Category, UserProfile
 # Register your models here.
 
-admin.site.register(Member)
 admin.site.register(Article)
 admin.site.register(Comment)
 admin.site.register(Snippet)

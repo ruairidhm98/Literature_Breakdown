@@ -2,25 +2,29 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-class Member(models.Model):
-    username = models.CharField(max_length=20, unique=True)
-    password = models.CharField(max_length=15)
+class UserProfile(models.Model):
+    # This line is required. Links UserProfile to a User model instance.
+    user = models.OneToOneField(User)
+
+    # The additional attributes we wish to include.
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+
     num_articles = models.IntegerField(default=0)
-    name = models.CharField(max_length=128, unique=False)
-    email = models.EmailField()
-    profile_pic = models.ImageField(upload_to='user_pictures', blank=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
         super(Member, self).save(*args, **kwargs)
 
+    # Override the __unicode__() method to return out something meaningful!
+    # Remember if you use Python 2.72x, define __unicode__ too!
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class Article(models.Model):
-    author = models.ForeignKey(Member)
+    author = models.ForeignKey(UserProfile)
     date_published = models.CharField(max_length=8, unique=False)
     book = models.CharField(max_length=128, unique=False)
     views = models.IntegerField(default=0)
@@ -41,7 +45,7 @@ class Article(models.Model):
 
 class Comment(models.Model):
     user_comment = models.CharField(max_length=128, unique=False)
-    user = models.ForeignKey(Member)
+    user = models.ForeignKey(UserProfile)
     rating = models.FloatField(max_length=5.0)
     article = models.ForeignKey(Article)
 
@@ -66,15 +70,4 @@ class Category(models.Model):
         return self.name
 
 
-class UserProfile(models.Model):
-    # This line is required. Links UserProfile to a User model instance.
-    user = models.OneToOneField(User)
 
-    # The additional attributes we wish to include.
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-
-    # Override the __unicode__() method to return out something meaningful!
-    # Remember if you use Python 2.72x, define __unicode__ too!
-    def __str__(self):
-        return self.user.username
