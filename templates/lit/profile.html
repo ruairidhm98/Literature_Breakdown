@@ -41,7 +41,7 @@
 	</div>
 	
 	<div class="col-md-12">
-		<h4 style="text-align: right"><a href="{% url 'add_article' %}">Add a new Analysis</a></h4>
+		<h4 style="text-align: right"><a href="{% url 'add_article' user.username %}">Add a new Analysis</a></h4>
 	</div>
 	{% if articles %}
 	<div style="padding-top:30px;">

@@ -19,4 +19,4 @@ class UserProfileForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ('title', 'book', 'analysis', 'category', 'img')
+        fields = ('title', 'book', 'book_author', 'book_published', 'analysis', 'category', 'img')
