@@ -36,9 +36,9 @@
 			  {% for c in categories %}
 					<li class="nav-item">
 					{% if c == category %}
-					  <a class="nav-link active" href="{% url 'show_category' category.slug %}">{{ c.name }}</a>
+					  <a class="nav-link active" href="{% url 'show_category' c.slug %}">{{ c.name }}</a>
 					{% else %}
-					  <a class="nav-link" href="{% url 'show_category' category.slug %}">{{ c.name }}</a>
+					  <a class="nav-link" href="{% url 'show_category' c.slug %}">{{ c.name }}</a>
 					{% endif %}
 					</li>
 			   {% endfor %}
