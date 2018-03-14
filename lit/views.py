@@ -31,9 +31,14 @@ def search(request):
     if request.method == 'POST':
         query = request.POST['query'].strip()
         if query:
-            result_list = run_query(query)
-            context_dict = {'result_list': result_list,
-                    'query' : query}
+            articles = Article.objects.filter()
+            for article in articles:
+                if query.upper() in article.title.upper():
+                    result_list += [article]
+            context_dict = {'result_list': result_list, 'query': query}
+        if query == "":
+            result_list = Article.objects.filter()
+            context_dict = {'result_list': result_list, 'query': query}
 
     return render(request, 'lit/search.html', context_dict)
 
