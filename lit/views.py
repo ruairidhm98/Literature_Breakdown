@@ -204,7 +204,8 @@ def profile(request, username):
         else:
             print(form.errors)
     
-    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'articles': articles, 'form': form})
+    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'numb_articles': len(articles),
+                                                'selecteduser': user, 'articles': articles, 'form': form})
 
 
 def faq(request):
