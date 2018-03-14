@@ -194,6 +194,9 @@ def profile(request, username):
     
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
     articles = Article.objects.filter(author=userprofile)
+    count = 0
+    for article in articles:
+        count +=1
     form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
     
     if request.method == 'POST':
@@ -204,7 +207,7 @@ def profile(request, username):
         else:
             print(form.errors)
     
-    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'articles': articles, 'form': form})
+    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'num_articles': count,'selecteduser': user, 'articles': articles, 'form': form})
 
 
 def faq(request):
