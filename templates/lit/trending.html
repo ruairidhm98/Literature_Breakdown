@@ -33,16 +33,16 @@
 			</li>
 
 			{% if categories %}
-			  {% for c in categories %}
+			  {% for category in categories %}
 					<li class="nav-item">
-					  <a class="nav-link" href="#">{{ c.name }}</a>
+					  <a class="nav-link" href="{% url 'show_category' category.slug %}">{{ category.name }}</a>
 					</li>
 			   {% endfor %}
 			 {% else %}
 				  <strong>There are no categories to show.</strong>
 			{% endif %}
-			  </ul>
-			</nav>
+			 </ul>
+		</nav>
 
 		<div class="row marketing">
 			<div class="col-lg-6">

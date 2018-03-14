@@ -33,16 +33,16 @@
 			</li>
 
 			{% if categories %}
-			  {% for c in categories %}
+			  {% for category in categories %}
 					<li class="nav-item">
-					  <a class="nav-link" href="#">{{ c.name }}</a>
+					  <a class="nav-link" href="{% url 'show_category' category.slug %}">{{ category.name }}</a>
 					</li>
 			   {% endfor %}
 			 {% else %}
 				  <strong>There are no categories to show.</strong>
 			{% endif %}
-			  </ul>
-			</nav>
+			 </ul>
+		</nav>
 
 		<h1 class="display-3">What is this site?</h1>
 		<p>The main functionality of Literature Breakdown is to provide a hub for book lovers in which they can

@@ -248,7 +248,7 @@ def show_category(request, category_name_slug):
 
         # We also add the category object from
         # the database to the context dictionary.
-        # We'll use this in the template to verify that the category exists.
+        # We'll use this in the template to verify if we are looking at the same category
         context_dict['category'] = category
 
         # Pass the category list to display on the sidebar
@@ -260,6 +260,7 @@ def show_category(request, category_name_slug):
         # the template will display the "no category" message for us.
         context_dict['articles'] = None
         context_dict['category'] = None
+        context_dict['categories'] = None
         
     return render(request, 'lit/category.html', context_dict)
 
