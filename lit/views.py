@@ -17,11 +17,17 @@ def index(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
-    short_story = Article.objects.filter(category="Short Story")
-    
+    short_stories = Article.objects.filter(category="Short Story")
+    fiction = Article.objects.filter(category="Fiction")
+    scripture = Article.objects.filter(category="Scripture")
+    philosophy = Article.objects.filter(category="Philosophy")
     context_dict = {'articles_new': article_list_new,
                     'articles_trending' : article_list_trending,
-                    'categories': category_list}
+                    'categories': category_list,
+                    'short_stories' : short_stories,
+                    'scripture' : scripture,
+                    'fiction' : fiction,
+                    'philosophy' : philosophy}
     return render(request, 'lit/index.html', context=context_dict)
 
 
