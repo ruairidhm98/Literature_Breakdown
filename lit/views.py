@@ -17,17 +17,10 @@ def index(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
-    short_stories = Article.objects.filter(category="Short Story")
-    fiction = Article.objects.filter(category="Fiction")
-    scripture = Article.objects.filter(category="Scripture")
-    philosophy = Article.objects.filter(category="Philosophy")
+    
     context_dict = {'articles_new': article_list_new,
                     'articles_trending' : article_list_trending,
-                    'categories': category_list,
-                    'short_stories' : short_stories,
-                    'scripture' : scripture,
-                    'fiction' : fiction,
-                    'philosophy' : philosophy}
+                    'categories': category_list}
     return render(request, 'lit/index.html', context=context_dict)
 
 
@@ -334,3 +327,32 @@ def add_article(request, username):
                    'lit/add_article.html',
                    {'article_form': article_form,
                    'registered': registered})
+
+@login_required
+def add_favourite(request, username, article_name_slug):
+    try:
+        user = User.objects.get(username=username)
+        article = Article.objects.get(slug=article_name_slug)
+    except (User.DoesNotExist, Article.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+
+    # Test whether this user already has a Favourites object
+    if Favourites.objects.filter(user=userprofile).exists():
+        favourite = Favourites.objects.get(user=userprofile)
+        print(favourite.fav_list.all())
+        favourites = favourite.fav_list.all()
+        if article in favourites:
+            print("THIS HAS ALREADY BEEN FAVOURITED!")
+        else:
+            print("Saving this")
+            favourite.fav_list.add(article)
+            favourite.save()
+    else:
+        favourite = Favourites.objects.create(user=userprofile)
+        favourite.fav_list.add(article)
+        favourite.save()   
+
+    return redirect('show_article', article_name_slug=article_name_slug)
