@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+{% extends 'lit/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+
+{% block body_block %}
+	<h1 class="display-3">Add a new Analysis</h1>
+	{% if registered %}
+		<strong>Article uploaded successfully!</strong>
+		<a href="{% url 'index' %}">Return to the homepage.</a><br />
+	{% else %}
+		<strong>Write your article here!</strong><br />
+		<form id="article_form" method="post" action="{% url 'add_article' %}"
+			enctype="multipart/form-data">
+
+		{% csrf_token %}
+
+		<!-- Display each form -->
+		{{ article_form.as_p }}
+
+		<!-- Provide a button to click to submit the form. -->
+		<input type="submit" name="submit" value="Register" />
+		</form>
+	{% endif %}
+{% endblock %}

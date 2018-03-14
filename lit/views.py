@@ -186,7 +186,6 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('index'))
 
-@login_required
 def profile(request, username):
     try:
         user = User.objects.get(username=username)
@@ -194,6 +193,7 @@ def profile(request, username):
         return redirect('index')
     
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    articles = Article.objects.filter(author=userprofile)
     form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
     
     if request.method == 'POST':
@@ -204,7 +204,7 @@ def profile(request, username):
         else:
             print(form.errors)
     
-    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'form': form})
+    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'articles': articles, 'form': form})
 
 
 def faq(request):
@@ -258,3 +258,51 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
         
     return render(request, 'lit/category.html', context_dict)
+
+@login_required
+def add_article(request):
+    # A boolean value for telling the template
+    # whether the registration was successful.
+    # Set to False initially. Code changes value to
+    # True when registration succeeds.
+    registered = False
+    
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        # Attempt to grab information from the raw form information.
+        # Note that we make use of both ArticleForm.
+        article_form = ArticleForm(data=request.POST)
+
+        # If the form is valid...
+        if article_form.is_valid():
+            # Since we need to set the img attribute ourselves,
+            # we set commit=False. This delays saving the model
+            # until we're read to avoid integrity problems.
+            article = article_form.save(commit=False)
+
+            # Did the user provide a profile picture?
+            # If so, we need to get it from the input form and
+            # put it in the UserProfile model.
+            if 'img' in request.FILES:
+                article.img = request.FILES['img']
+
+            # Now we save the Article model instance.
+            article.save()
+
+            # Update our variable to indicate that the template
+            # registration was successful.
+            registered = True
+        else:
+            # Invalid form - mistakes or something else?
+            # Print problems to the terminal.
+            print(article_form.errors)
+    else:
+        # Not a HTTP POST, so we render our form using two ModelForm instances.
+        # These forms will be blank, ready for user input.
+        article_form = ArticleForm()
+
+    # Render the template depending on the context.
+    return render(request,
+                   'lit/add_article.html',
+                   {'article_form': article_form,
+                   'registered': registered})

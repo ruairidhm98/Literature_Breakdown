@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^new/$', views.new_articles, name='new'),
     url(r'^trending/$', views.trending_articles, name='trending'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
+    url(r'^add_article/$', views.add_article, name='add_article'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

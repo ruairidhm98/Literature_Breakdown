@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from lit.models import UserProfile
+from lit.models import UserProfile, Article
 
 
 class UserForm(forms.ModelForm):
@@ -15,3 +15,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'name', 'picture',)
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ('title', 'book', 'analysis', 'category', 'img')
