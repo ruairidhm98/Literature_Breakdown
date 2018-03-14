@@ -13,6 +13,9 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=128)
     num_articles = models.IntegerField(default=0)
     slug = models.SlugField()
+    age = models.IntegerField()
+    gender = models.CharField(max_length=4, default="")
+    location = models.CharField(max_length=128)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
@@ -35,6 +38,8 @@ class Article(models.Model):
     slug = models.SlugField()
     img = models.ImageField(upload_to='profile_images', blank=True)
     rating = models.FloatField(max_length=5.0, default=0.0)
+    book_author = models.CharField(max_length=128, default="")
+    book_published = models.CharField(max_length=128, default="")
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -66,9 +71,18 @@ class Snippet(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=False)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
+
+class Favourites(models.Model):
+    user = models.ForeignKey(UserProfile)
+    fav_list = models.ManyToManyField(Article)
 
 
