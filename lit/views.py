@@ -207,7 +207,7 @@ def profile(request, username):
         else:
             print(form.errors)
     
-    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'num_articles': count,'selecteduser': user, 'articles': articles, 'form': form})
+    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'numb_articles': count,'selecteduser': user, 'articles': articles, 'form': form})
 
 
 def faq(request):
@@ -253,6 +253,10 @@ def show_category(request, category_name_slug):
         # the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['category'] = category
+
+        # Pass the category list to display on the sidebar
+        category_list = Category.objects.all()
+        context_dict['categories'] = category_list
     except Category.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything -
@@ -263,7 +267,12 @@ def show_category(request, category_name_slug):
     return render(request, 'lit/category.html', context_dict)
 
 @login_required
-def add_article(request):
+def add_article(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+    
     # A boolean value for telling the template
     # whether the registration was successful.
     # Set to False initially. Code changes value to
@@ -288,6 +297,10 @@ def add_article(request):
             # put it in the UserProfile model.
             if 'img' in request.FILES:
                 article.img = request.FILES['img']
+
+            # Set the article's writer
+            userprofile = UserProfile.objects.get_or_create(user=user)[0]
+            article.author = userprofile
 
             # Now we save the Article model instance.
             article.save()
