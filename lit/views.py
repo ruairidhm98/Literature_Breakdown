@@ -209,25 +209,27 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def profile(request, username):
+    context_dict = {}
+    
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         return redirect('index')
-    
+
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
     articles = Article.objects.filter(author=userprofile)
-    form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
+    context_dict['userprofile'] = userprofile
+    context_dict['articles'] = articles
+    context_dict['numb_articles'] = len(articles)
+    context_dict['selecteduser'] = user
     
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('profile', user.username)
-        else:
-            print(form.errors)
-    
-    return render(request, 'lit/profile.html', {'userprofile': userprofile, 'numb_articles': len(articles),
-                                                'selecteduser': user, 'articles': articles, 'form': form})
+    # If this user already has a favourites object then use it
+    if Favourites.objects.filter(user=userprofile).exists():
+        favourite = Favourites.objects.get(user=userprofile)
+        favourites = favourite.fav_list.all()
+        context_dict['favourites'] = favourites
+        
+    return render(request, 'lit/profile.html', context_dict)
 
 
 def faq(request):
@@ -346,6 +348,7 @@ def add_article(request, username):
 
 @login_required
 def add_favourite(request, username, article_name_slug):
+    # Check that user and article exist
     try:
         user = User.objects.get(username=username)
         article = Article.objects.get(slug=article_name_slug)
@@ -355,20 +358,44 @@ def add_favourite(request, username, article_name_slug):
 
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
 
-    # Test whether this user already has a Favourites object
+    # If this user already has a favourites object then use it
     if Favourites.objects.filter(user=userprofile).exists():
         favourite = Favourites.objects.get(user=userprofile)
-        print(favourite.fav_list.all())
         favourites = favourite.fav_list.all()
-        if article in favourites:
-            print("THIS HAS ALREADY BEEN FAVOURITED!")
-        else:
-            print("Saving this")
+        # If this artcile hasn't already been favourited then add it
+        if article not in favourites:
             favourite.fav_list.add(article)
             favourite.save()
+    # If this user doesn't have a favourites object then create it
+    # and add the article
     else:
         favourite = Favourites.objects.create(user=userprofile)
         favourite.fav_list.add(article)
         favourite.save()   
 
     return redirect('show_article', article_name_slug=article_name_slug)
+
+@login_required
+def remove_favourite(request, username, article_name_slug):
+    # Check that user and article exist
+    try:
+        user = User.objects.get(username=username)
+        article = Article.objects.get(slug=article_name_slug)
+    except (User.DoesNotExist, Article.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+
+    # If this user already has a favourites object then use it
+    if Favourites.objects.filter(user=userprofile).exists():
+        favourite = Favourites.objects.get(user=userprofile)
+        favourites = favourite.fav_list.all()
+        # If this artcile hasn't already been favourited then add it
+        if article in favourites:
+            favourite.fav_list.remove(article)
+            favourite.save()
+
+    return redirect('show_article', article_name_slug=article_name_slug)
+
+

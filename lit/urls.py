@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^trending/$', views.trending_articles, name='trending'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),    url(r'^add-article/(?P<username>[\w\-]+)/$', views.add_article, name='add_article'),
     url(r'^add-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.add_favourite, name='add_favourite'),
+    url(r'^remove-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_favourite, name='remove_favourite'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
