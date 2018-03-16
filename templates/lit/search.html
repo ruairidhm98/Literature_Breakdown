@@ -5,7 +5,7 @@
 
 {% block body_block %}
 <div>
-  <h1>Search Literature Breakdown</h1>
+  <h1 style="padding-top:30px;">Search Literature Breakdown</h1>
   <br/>
   <form class="form-inline" id="user_form" method="post" action="{% url 'search' %}">
     {% csrf_token %}
@@ -21,7 +21,7 @@
 
   <div>
     {% if result_list %}
-    <h3>Results</h3>
+    <h3 style="padding-top:30px;">Results</h3>
     <!-- Display search results in an ordered list -->
     <div class="list-group">
     {% for result in result_list %}

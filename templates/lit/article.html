@@ -55,22 +55,25 @@
 		{% for snippet in snippets %}
 		<div class="row" style="padding-top:10px;">
 			<div class="col">
-			<h4 style="text-align:center">{{ snippet.title }} on page: {{ snippet.page }}</h4>
+				<h4 style="text-align:center">{{ snippet.title }} on page: {{ snippet.page }}</h4>
 			</div>
-		</div>
-		<div class="row" style="padding-top:10px;">
-			<div class="col-md-6">
-				<h4 style="text-align:center">Passage</h4>
-				<div class="row" style="padding-top:10px;">
-					<p style="text-align:left">{{ snippet.passage }}</p>
+			<div class="row"">
+				<div class="col-md-6">
+					<h4 style="text-align:center;padding-top:10px;">Passage</h4>
+					<p style="position: relative;
+							  float: left;
+							  top: 50%;
+							  left: 50%;
+							  transform: translate(-50%, -50%);">{{ snippet.passage }}</p>
 				</div>
-			</div>
-			<div class="col-md-6">
-				<h4 style="text-align:center">Analysis</h4>
-				<div class="row" style="padding-top:10px;">
-					<p style="text-align:right; display:block;">{{ snippet.analysis }}</p>
+				<div class="col-md-6">
+					<h4 style="text-align:center;padding-top:10px;">Analysis</h4>
+					<p style="position: relative;
+							  float: left;
+							  top: 50%;
+							  left: 50%;
+							  transform: translate(-50%, -50%);">{{ snippet.analysis }}</p>
 				</div>
-			</div>
 		</div>
 		{% endfor %}
 	</div>
@@ -80,15 +83,16 @@
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">Comments</h1>
 		{% for comment in comments %}
-		<div class="row" style="padding-top:10px;">
-			<div class="col-md-4">
-				<h4 style="text-align:center">{{ comment.user }}</h4>
-				<div class="row" style="padding-top:10px;">
-					<p style="text-align:center">{{ comment.rating }}</p>
-				</div>
+		<div class="row" style="padding-top:10px; border-bottom: 1px solid #eee;">
+			<div class="col-md-3">
+				<h4 style="text-align:center">From: {{ comment.user }}</h4>
+				<h4 style="text-align:center; padding-top:10px;">Rating: {{ comment.rating }}</h4>
 			</div>
-			<div class="col-md-8">
-				<p style="text-align:center">{{ comment.user_comment }}</p>
+			<div class="col-md-9">
+				<p style="position: relative;
+						  float: left;
+						  top: 50%;
+						  transform: translate(-50%, -50%);">{{ comment.user_comment }}</p>
 			</div>
 		</div>
 		{% endfor %}
