@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django import forms
 from django.contrib.auth.models import User
+from django import forms
 from lit.models import *
 from lit.forms import *
 from datetime import datetime
@@ -45,6 +44,11 @@ def search(request):
 
 
 def show_article(request, article_name_slug):
+    # Check if a logged in user is viewing this
+    logged_in = False
+    if request.user.is_authenticated():
+        logged_in = True
+    
     # Create a context dictionary in which we can pass
     # to the template rendering enginge.
     context_dict = {}
@@ -70,6 +74,18 @@ def show_article(request, article_name_slug):
         context_dict['article'] = None
         context_dict['comments'] = None
         context_dict['snippets'] = None
+
+    context_dict['favourited'] = False
+    if logged_in == True:
+        # Test whether this user already has a Favourites object
+        userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+        if Favourites.objects.filter(user=userprofile).exists():
+            favouriteObject = Favourites.objects.get(user=userprofile)
+            favourites = favouriteObject.fav_list.all()
+            # Test whether this use has favourited this article
+            if article in favourites:
+                print("THIS HAS ALREADY BEEN FAVOURITED!")
+                context_dict['favourited'] = True
         
     return render(request, 'lit/article.html', context_dict)
 

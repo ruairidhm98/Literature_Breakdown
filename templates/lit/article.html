@@ -26,8 +26,12 @@
 				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
 				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
 				<div class="col-md-3"><h4><a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
-				{% if user.is_authenticated %}	
+				{% if user.is_authenticated %}
+					{% if favourited %}
+					<div class="col-md-3"><h4>Favourited</h4></div>
+					{% else %}
 					<div class="col-md-3"><h4><a href="{% url 'add_favourite' user.username article.slug %}">Add to Favourites</a></h4></div>
+					{% endif %}
 				{% endif %}
 			</div>
 			<div class="row" style="padding-top:30px;">
