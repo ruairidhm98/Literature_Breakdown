@@ -53,6 +53,7 @@ def show_article(request, article_name_slug):
     # to the template rendering enginge.
     context_dict = {}
 
+    # ARTICLE, COMMENTS, AND SNIPPETS DATA HANDLING
     try:
         # Can we find a article name slug with the given name?
         # If we can't, the .get() method rasises a DoesNotExist exception.
@@ -77,6 +78,7 @@ def show_article(request, article_name_slug):
 
     context_dict['favourited'] = False
     if logged_in == True:
+        # FAVOURITE HANDLING
         # Test whether this user already has a Favourites object
         userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
         if Favourites.objects.filter(user=userprofile).exists():
@@ -84,8 +86,41 @@ def show_article(request, article_name_slug):
             favourites = favouriteObject.fav_list.all()
             # Test whether this use has favourited this article
             if article in favourites:
-                print("THIS HAS ALREADY BEEN FAVOURITED!")
                 context_dict['favourited'] = True
+
+        # COMMENT FORM HANDLING
+        # If it's a HTTP POST, we're interested in processing form data.
+        if request.method == 'POST':
+            # Attempt to grab information from the raw form information.
+            # Note that we make use of both ArticleForm.
+            comment_form = CommentForm(data=request.POST)
+
+            # If the form is valid...
+            if comment_form.is_valid():
+                # Since we need to set the img attribute ourselves,
+                # we set commit=False. This delays saving the model
+                # until we're read to avoid integrity problems.
+                comment = comment_form.save(commit=False)
+            
+                # Set the comment's writer and article
+                userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+                comment.user = userprofile
+                comment.article = article
+
+                # Now we save the Comment model instance.
+                comment.save()
+            else:
+                # Invalid form - mistakes or something else?
+                # Print problems to the terminal.
+                print(comment_form.errors)
+
+            comment_form = CommentForm()
+        else:
+            # Not a HTTP POST, so we render our form.
+            # These forms will be blank, ready for user input.
+            comment_form = CommentForm()
+        
+        context_dict['comment_form'] = comment_form
         
     return render(request, 'lit/article.html', context_dict)
 
