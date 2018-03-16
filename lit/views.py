@@ -103,7 +103,6 @@ def show_article(request, article_name_slug):
                 comment = comment_form.save(commit=False)
             
                 # Set the comment's writer and article
-                userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
                 comment.user = userprofile
                 comment.article = article
 
@@ -119,7 +118,8 @@ def show_article(request, article_name_slug):
             # Not a HTTP POST, so we render our form.
             # These forms will be blank, ready for user input.
             comment_form = CommentForm()
-        
+            
+        context_dict['userprofile'] = userprofile
         context_dict['comment_form'] = comment_form
         
     return render(request, 'lit/article.html', context_dict)
@@ -426,11 +426,29 @@ def remove_favourite(request, username, article_name_slug):
     if Favourites.objects.filter(user=userprofile).exists():
         favourite = Favourites.objects.get(user=userprofile)
         favourites = favourite.fav_list.all()
-        # If this artcile hasn't already been favourited then add it
+        # If this artcile has already been favourited then delete the instance
         if article in favourites:
             favourite.fav_list.remove(article)
             favourite.save()
 
     return redirect('show_article', article_name_slug=article_name_slug)
 
+@login_required
+def remove_comment(request, article_name_slug, user_comment):
+    # Check that user, article, and comment exist
+    try:
+        user = User.objects.get(username=request.user.username)
+        article = Article.objects.get(slug=article_name_slug)
+        comment = Comment.objects.get(user_comment=user_comment)
+    except (User.DoesNotExist, Article.DoesNotExist, Comment.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+
+    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+
+    # If this user already has a comment object then delete it
+    if Comment.objects.filter(user=userprofile).exists():
+        Comment.objects.filter(user_comment=user_comment).delete()
+
+    return redirect('show_article', article_name_slug=article_name_slug)
 
