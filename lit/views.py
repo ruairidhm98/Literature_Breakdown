@@ -124,7 +124,6 @@ def show_article(request, article_name_slug):
         
     return render(request, 'lit/article.html', context_dict)
 
-
 def register(request):
     # A boolean value for telling the template
     # whether the registration was successful.

@@ -50,7 +50,7 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    user_comment = models.CharField(max_length=128, unique=False)
+    user_comment = models.CharField(max_length=128, unique=True)
     user = models.ForeignKey(UserProfile)
     rating = models.FloatField(max_length=5.0)
     article = models.ForeignKey(Article)
