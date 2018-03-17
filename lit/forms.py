@@ -18,6 +18,14 @@ class UserProfileForm(forms.ModelForm):
 
 
 class ArticleForm(forms.ModelForm):
+
+    title = forms.CharField( widget=forms.Textarea)
+    book = forms.CharField( widget=forms.Textarea)
+    book_author = forms.CharField( widget=forms.Textarea)
+    book_published = forms.CharField( widget=forms.Textarea)
+    analysis = forms.CharField( widget=forms.Textarea)
+    category = forms.CharField( widget=forms.Textarea)
+
     class Meta:
         model = Article
         fields = ('title', 'book', 'book_author', 'book_published', 'analysis', 'category', 'img')
