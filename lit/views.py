@@ -433,13 +433,12 @@ def remove_favourite(request, username, article_name_slug):
     return redirect('show_article', article_name_slug=article_name_slug)
 
 @login_required
-def remove_comment(request, article_name_slug, user_comment):
+def remove_comment(request, id, article_name_slug):
     # Check that user, article, and comment exist
     try:
         user = User.objects.get(username=request.user.username)
         article = Article.objects.get(slug=article_name_slug)
-        comment = Comment.objects.get(user_comment=user_comment)
-    except (User.DoesNotExist, Article.DoesNotExist, Comment.DoesNotExist) as error:
+    except (User.DoesNotExist, Article.DoesNotExist) as error:
         print(error)
         return redirect('article')
 
@@ -447,7 +446,7 @@ def remove_comment(request, article_name_slug, user_comment):
 
     # If this user already has a comment object then delete it
     if Comment.objects.filter(user=userprofile).exists():
-        Comment.objects.filter(user_comment=user_comment).delete()
+        Comment.objects.filter(id=id).delete()
 
     return redirect('show_article', article_name_slug=article_name_slug)
 

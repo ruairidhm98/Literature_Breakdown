@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^add-article/(?P<username>[\w\-]+)/$', views.add_article, name='add_article'),
     url(r'^add-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.add_favourite, name='add_favourite'),
     url(r'^remove-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_favourite, name='remove_favourite'),
-    url(r'^remove-comment/(?P<article_name_slug>[\w-]+)/(?P<user_comment>[-\w\ ]+)/$', views.remove_comment, name='remove_comment'),
+    url(r'^remove-comment/(?P<id>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_comment, name='remove_comment'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
