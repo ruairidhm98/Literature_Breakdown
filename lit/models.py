@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+import uuid
 
 
 class UserProfile(models.Model):
@@ -50,13 +51,15 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    user_comment = models.CharField(max_length=128, unique=True)
+    user_comment = models.CharField(max_length=128)
     user = models.ForeignKey(UserProfile)
     rating = models.FloatField(max_length=5.0)
     article = models.ForeignKey(Article)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
-        return self.user_comment
+        return self.id
 
 
 class Snippet(models.Model):
@@ -84,5 +87,8 @@ class Category(models.Model):
 class Favourites(models.Model):
     user = models.ForeignKey(UserProfile)
     fav_list = models.ManyToManyField(Article)
+
+    def __str__(self):
+        return self.user
 
 
