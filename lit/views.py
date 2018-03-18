@@ -365,6 +365,8 @@ def add_article(request, username):
             # Update our variable to indicate that the template
             # registration was successful.
             registered = True
+            
+            return redirect('add_snippet', username=username, article_name_slug=article.slug)
         else:
             # Invalid form - mistakes or something else?
             # Print problems to the terminal.
@@ -449,4 +451,65 @@ def remove_comment(request, id, article_name_slug):
         Comment.objects.filter(id=id).delete()
 
     return redirect('show_article', article_name_slug=article_name_slug)
+
+@login_required
+def add_snippet(request, username, article_name_slug):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+
+    # Create a context dictionary in which we can pass
+    # to the template rendering enginge.
+    context_dict = {}
+
+    # ARTICLE, COMMENTS, AND SNIPPETS DATA HANDLING
+    try:
+        # Can we find a article name slug with the given name?
+        # If we can't, the .get() method rasises a DoesNotExist exception.
+        # So the .get() method returns one model instance or raises and exception.
+        article = Article.objects.get(slug=article_name_slug)
+        snippets = Snippet.objects.filter(title=article)
+
+        # We also add the article object from
+        # the database to the context dictionary.
+        # We'll use this in the template to verify that the article exists.
+        context_dict['article'] = article
+        context_dict['snippets'] = snippets
+    except Article.DoesNotExist:
+        # We get here if we didn't find the specified article.
+        # Don't do anything -
+        # the template will display the "no category" message for us.
+        context_dict['article'] = None
+        context_dict['snippets'] = None
+    
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        # Attempt to grab information from the raw form information.
+        # Note that we make use of both ArticleForm.
+        snippet_form = SnippetForm(data=request.POST)
+
+        # If the form is valid...
+        if snippet_form.is_valid():
+            # Get and save the Snippet
+            snippet = snippet_form.save(commit=False)
+            snippet.title = article
+            snippet.save()
+
+            # Reload the snippet form
+            snippet_form = SnippetForm()
+        else:
+            # Invalid form - mistakes or something else?
+            # Print problems to the terminal.
+            print(snippet_form.errors)
+    else:
+        # Not a HTTP POST, so we render our form using the ModelForm instance.
+        # These forms will be blank, ready for user input.
+        snippet_form = SnippetForm()
+        
+    context_dict['snippet_form'] = snippet_form
+    
+    
+        
+    return render(request, 'lit/add_snippet.html', context_dict)
 

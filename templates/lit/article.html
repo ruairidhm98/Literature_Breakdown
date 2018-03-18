@@ -74,6 +74,7 @@
 							  left: 50%;
 							  transform: translate(-50%, -50%);">{{ snippet.analysis }}</p>
 				</div>
+			</div>
 		</div>
 		{% endfor %}
 	</div>
@@ -108,6 +109,45 @@
 			enctype="multipart/form-data">
 
 		{% csrf_token %}
+		
+		<style>
+            html, body{ height: 100%; }
+            body{
+            background: #ffff;
+            display: flex; align-items: left; }
+
+            textarea{
+                display: block;
+                box-sizing: padding-box;
+                overflow: hidden;
+                padding: 5px;
+                height: 33px;
+                width: 500px;
+                font-size: 14px;
+                margin: 10px auto;
+                border-radius: 6px;
+                box-shadow: 2px 2px 8px rgba(black, .3);
+                border: 1;
+            }
+			
+			textarea[name=analysis] {   
+                height: 200px;
+			}   
+            </style>
+            <script>
+				// Applied globally on all textareas with the "autoExpand" class
+				$(document).one('focus.autoExpand', 'textarea.autoExpand', function(){
+					var savedValue = this.value;
+					this.value = '';
+					this.baseScrollHeight = this.scrollHeight;
+					this.value = savedValue;
+				 }).on('input.autoExpand', 'textarea.autoExpand', function(){
+					var minRows = this.getAttribute('data-min-rows')|1, rows;
+					this.rows = minRows;
+					rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+					this.rows = minRows + rows;
+				});
+            </script>
 
 		<!-- Display each form -->
 		{{ comment_form.as_p }}

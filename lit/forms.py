@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from lit.models import UserProfile, Article, Comment
+from lit.models import UserProfile, Article, Comment, Snippet
 
 
 class UserForm(forms.ModelForm):
@@ -39,8 +39,19 @@ class ArticleForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    user_comment = forms.CharField(widget=forms.Textarea)
     rating = forms.DecimalField(min_value=0, max_value=5, max_digits=2, decimal_places=1)
     
     class Meta:
         model = Comment
         fields = ('user_comment', 'rating')
+
+class SnippetForm(forms.ModelForm):
+    page = forms.CharField( widget=forms.Textarea)
+    passage = forms.CharField( widget=forms.Textarea)
+    analysis = forms.CharField( widget=forms.Textarea)
+
+    class Meta:
+        model = Snippet
+        fields = ('page', 'passage', 'analysis')
+

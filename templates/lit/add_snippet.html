@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+{% extends 'lit/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+
+{% block body_block %}
+	<h1 class="display-3" style="text-align:center;">Preview Article and Add Snippets</h1>
+	<div class="row" style="padding-top:30px;">
+		<div class="col-md-3">
+			<img src="{{ MEDIA_URL }}{{ article.img }}"
+				 width="300"
+				 height="400"
+				 alt="Cover" 
+				 style="max-width: 100%;
+						height: auto;
+						width: auto\9;"/>
+		</div>
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-10"><h1 class="display-3">{{ article.title }}</h1></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
+				<div class="col-md-3"><h4><a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="col-md-3"><h4>{{ article.category }}</h4></div>
+				<div class="col-md-3"><h4>{{ article.book }}</h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;"> 
+				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+			</div>
+		</div>
+	</div>
+	
+	<div style="padding-top:30px;">
+		<h1 style="text-align:center">General Analysis</h1>
+		<p style="text-align:center">{{ article.analysis}}</p>
+	</div>
+	
+	{% if snippets %}
+	<div style="padding-top:30px;">
+		<h1 style="text-align:center">Snippets</h1>
+		{% for snippet in snippets %}
+		<div class="row" style="padding-top:10px;">
+			<div class="col">
+				<h4 style="text-align:center">{{ snippet.title }} on page: {{ snippet.page }}</h4>
+			</div>
+			<div class="row"">
+				<div class="col-md-6">
+					<h4 style="text-align:center;padding-top:10px;">Passage</h4>
+					<p style="position: relative;
+							  float: left;
+							  top: 50%;
+							  left: 50%;
+							  transform: translate(-50%, -50%);">{{ snippet.passage }}</p>
+				</div>
+				<div class="col-md-6">
+					<h4 style="text-align:center;padding-top:10px;">Analysis</h4>
+					<p style="position: relative;
+							  float: left;
+							  top: 50%;
+							  left: 50%;
+							  transform: translate(-50%, -50%);">{{ snippet.analysis }}</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+	
+	
+	<div style="padding-top:30px;">
+		<h1 style="text-align:center">Add a Snippet</h1>
+	</div>
+	
+	<form id="article_form" method="post" action="{% url 'add_snippet' user.username article.slug %}"
+		enctype="multipart/form-data">
+
+	{% csrf_token %}
+		<style>
+		html, body{ height: 100%; }
+		body{
+		background: #ffff;
+		display: flex; align-items: left; }
+
+		textarea{
+			display: block;
+			box-sizing: padding-box;
+			overflow: hidden;
+			padding: 5px;
+			height: 33px;
+			width: 500px;
+			font-size: 14px;
+			margin: 10px auto;
+			border-radius: 6px;
+			box-shadow: 2px 2px 8px rgba(black, .3);
+			border: 1;
+		}
+		
+		textarea[name=analysis] {   
+			height: 200px;
+		}  
+
+		textarea[name=passage] {   
+			height: 200px;
+		}   
+		</style>
+		<script>
+			// Applied globally on all textareas with the "autoExpand" class
+			$(document).one('focus.autoExpand', 'textarea.autoExpand', function(){
+				var savedValue = this.value;
+				this.value = '';
+				this.baseScrollHeight = this.scrollHeight;
+				this.value = savedValue;
+			 }).on('input.autoExpand', 'textarea.autoExpand', function(){
+				var minRows = this.getAttribute('data-min-rows')|1, rows;
+				this.rows = minRows;
+				rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+				this.rows = minRows + rows;
+			});
+		</script>
+
+	<!-- Display each form -->
+	{{ snippet_form.as_p }}
+
+
+	<!-- Provide a button to click to submit the form. -->
+	<input type="submit" name="submit" value="Submit" />
+	</form>
+	
+	<div style="padding-top:30px;">
+		<h2 style="text-align:center"><a href="{% url 'show_article' article.slug %}">Finish and Submit</a></h1>
+	</div>
+{% endblock %}
+
+
