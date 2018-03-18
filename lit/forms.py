@@ -19,12 +19,19 @@ class UserProfileForm(forms.ModelForm):
 
 class ArticleForm(forms.ModelForm):
 
-    title = forms.CharField( widget=forms.Textarea)
-    book = forms.CharField( widget=forms.Textarea)
-    book_author = forms.CharField( widget=forms.Textarea)
-    book_published = forms.CharField( widget=forms.Textarea)
-    analysis = forms.CharField( widget=forms.Textarea)
-    category = forms.CharField( widget=forms.Textarea)
+    categories = [
+        ('Fiction', 'Fiction'),
+        ('Short Story', 'Short Story'),
+        ('Scripture', 'Scripture'),
+        ('Philosophy', 'Philosophy')
+    ]
+
+    title = forms.CharField(widget=forms.Textarea)
+    book = forms.CharField(widget=forms.Textarea)
+    book_author = forms.CharField(widget=forms.Textarea)
+    book_published = forms.CharField(widget=forms.Textarea)
+    analysis = forms.CharField(widget=forms.Textarea)
+    category = forms.CharField(widget=forms.Select(choices=categories))
 
     class Meta:
         model = Article
