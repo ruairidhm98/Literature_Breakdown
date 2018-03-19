@@ -64,12 +64,14 @@ class Comment(models.Model):
 
 class Snippet(models.Model):
     title = models.ForeignKey(Article)
+    snippet_title = models.CharField(max_length=128, default = "")
     page = models.IntegerField()
     passage = models.CharField(max_length=500, unique=False)
     analysis = models.CharField(max_length=1000, unique=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
 
     def __str__(self):
-        return self.analysis
+        return str(self.id)
 
 
 class Category(models.Model):

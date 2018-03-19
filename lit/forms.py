@@ -50,12 +50,14 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('user_comment', 'rating')
 
-class SnippetForm(forms.ModelForm):
-    page = forms.CharField( widget=forms.Textarea)
-    passage = forms.CharField( widget=forms.Textarea)
-    analysis = forms.CharField( widget=forms.Textarea)
 
-    class Meta:
-        model = Snippet
-        fields = ('page', 'passage', 'analysis')
+class SnippetForm(forms.ModelForm):
+   title = forms.CharField(widget=forms.Textarea)
+   page = forms.CharField(widget=forms.Textarea)
+   passage = forms.CharField(widget=forms.Textarea)
+   analysis = forms.CharField(widget=forms.Textarea)
+
+   class Meta:
+       model = Snippet
+       fields = ('title', 'page', 'passage', 'analysis')
 
