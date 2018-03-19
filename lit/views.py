@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -359,6 +359,7 @@ def add_article(request, username):
             userprofile = UserProfile.objects.get_or_create(user=user)[0]
             article.author = userprofile
 
+            article.date_published = datetime.datetime.now().strftime("%Y-%m-%d")
             # Now we save the Article model instance.
             article.save()
 
@@ -509,7 +510,123 @@ def add_snippet(request, username, article_name_slug):
         
     context_dict['snippet_form'] = snippet_form
     
-    
-        
     return render(request, 'lit/add_snippet.html', context_dict)
 
+@login_required
+def edit_article(request, username, article_name_slug):
+    # Check that user and article exist
+    try:
+        user = User.objects.get(username=request.user.username)
+        article = Article.objects.get(slug=article_name_slug)
+    except (User.DoesNotExist, Article.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+    
+    article = get_object_or_404(Article, slug=article_name_slug)
+    article_form = ArticleForm(request.POST or None, instance=article)
+    
+    if article_form.is_valid():
+        #userprofile = UserProfile.objects.get_or_create(user=user)[0]
+        #if Article.objects.filter(author=userprofile).exists():
+        #    Article.objects.filter(title=article.title).delete()
+        # Since we need to set the img attribute ourselves,
+        # we set commit=False. This delays saving the model
+        # until we're read to avoid integrity problems.
+        article = article_form.save(commit=False)
+
+        # Did the user provide a profile picture?
+        # If so, we need to get it from the input form and
+        # put it in the UserProfile model.
+        if 'img' in request.FILES:
+                article.img = request.FILES['img']
+
+        # Set the article's writer
+        userprofile = UserProfile.objects.get_or_create(user=user)[0]
+        article.author = userprofile
+
+        # Now we save the Article model instance.
+        article.save()
+        # Now we save the Article model instance.
+        #article.save(update_fields=['book', 'title', 'analysis', 'category', 'img', 'book_author', 'book_published'])
+
+        # Update our variable to indicate that the template
+        # registration was successful.
+        registered = True
+            
+        return redirect('add_snippet', username=username, article_name_slug=article.slug)
+    else:
+        # Invalid form - mistakes or something else?
+        # Print problems to the terminal.
+        print(article_form.errors)
+
+    # Render the template depending on the context.
+    return render(request,
+                   'lit/edit_article.html',
+                   {'article_form': article_form,
+                    'article': article})
+                
+@login_required
+def remove_article(request, username, article_name_slug):
+    # Check that user and article exist
+    try:
+        user = User.objects.get(username=request.user.username)
+        article = Article.objects.get(slug=article_name_slug)
+    except (User.DoesNotExist, Article.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+
+    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+    if Article.objects.filter(author=userprofile).exists():
+        Article.objects.filter(title=article.title).delete()
+
+    return redirect('profile', username=username)
+
+@login_required
+def edit_snippet(request, article_name_slug, snippet_analysis):
+    # Check that user, article, and snippet exist
+    try:
+        user = User.objects.get(username=request.user.username)
+        article = Article.objects.get(slug=article_name_slug)
+        snippet = Snippet.objects.get(title=article, analysis=snippet_analysis)
+    except (User.DoesNotExist, Article.DoesNotExist, Snippet.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+    
+    snippet = get_object_or_404(Snippet, title=article, analysis=snippet_analysis)
+    snippet_form = SnippetForm(request.POST or None, instance=snippet)
+    
+    if snippet_form.is_valid():
+        # Get and save the Snippet
+        snippet = snippet_form.save(commit=False)
+        snippet.title = article
+        snippet.save()
+        
+        return redirect('show_article', article_name_slug=article.slug)
+    else:
+        # Invalid form - mistakes or something else?
+        # Print problems to the terminal.
+        print(snippet_form.errors)
+        
+
+    # Render the template depending on the context.
+    return render(request,
+                   'lit/edit_snippet.html',
+                   {'snippet_form': article_form,
+                    'article': article})
+
+@login_required
+def remove_snippet(request, article_name_slug, snippet_analysis):
+    # Check that user, article, and snippet exist
+    try:
+        user = User.objects.get(username=request.user.username)
+        article = Article.objects.get(slug=article_name_slug)
+        snippet = Snippet.objects.get(title=article, analysis=snippet_analysis)
+    except (User.DoesNotExist, Article.DoesNotExist, Snippet.DoesNotExist) as error:
+        print(error)
+        return redirect('article')
+
+    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+    if Snippet.objects.filter(title=article).exists():
+        Snippet.objects.filter(analysis=snippet_analysis).delete()
+
+    return redirect('show_article', article_name_slug=article_name_slug)

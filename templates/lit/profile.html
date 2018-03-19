@@ -40,9 +40,15 @@
 		</div>
 	</div>
 	
-	<div class="col-md-12">
-		<h4 style="text-align: right"><a href="{% url 'add_article' user.username %}">Add a new Analysis</a></h4>
+	{% if user.username == selecteduser.username %}
+	<div class="col-md-12" style="padding-top:30px;">
+		<h4>Profile Admin Actions: 
+			<a href="{% url 'add_article' user.username %}">Add a new Analysis</a> - 
+			<a href="#">Edit Profile</a> - 
+			<a href="#">Delete Account</a>
+		</h4>
 	</div>
+	{% endif %}
 	{% if articles %}
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">User's Analyses</h1>

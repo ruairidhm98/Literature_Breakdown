@@ -21,5 +21,9 @@ urlpatterns = [
     url(r'^add-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.add_favourite, name='add_favourite'),
     url(r'^remove-favourite/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_favourite, name='remove_favourite'),
     url(r'^remove-comment/(?P<id>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_comment, name='remove_comment'),
+    url(r'^edit-article/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.edit_article, name='edit_article'),
+    url(r'^remove_article/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_article, name='remove_article'),
+    url(r'^edit-snippet/(?P<article_name_slug>[\w-]+)/(?P<snippet_analysis>[\w-]+)/$', views.edit_snippet, name='edit_snippet'),
+    url(r'^remove-snippet/(?P<article_name_slug>[\w-]+)/(?P<snippet_analysis>[\w-]+)/$', views.remove_snippet, name='remove_snippet'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

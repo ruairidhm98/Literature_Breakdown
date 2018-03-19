@@ -22,6 +22,20 @@
 			<div class="row">
 				<div class="col-md-10"><h1 class="display-3">{{ article.title }}</h1></div>
 			</div>
+			{% if user.is_authenticated %}{% if userprofile == article.author %}
+			<div class="row"> 
+				<div class="col-md-10">
+					<h4>
+						Analysis Author Actions: 
+						<a href="{% url 'edit_article' user.username article.slug %}">Edit</a>
+						/ 
+						<span onclick="return confirm('Are you sure?')">
+							<a href="{% url 'remove_article' user.username article.slug %}">Delete</a>
+						</span> 
+					</h4>
+				</div>
+			</div>
+			{% endif %}{% endif %}
 			<div class="row" style="padding-top:30px;">
 				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
 				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
@@ -56,6 +70,15 @@
 		<div class="row" style="padding-top:10px;">
 			<div class="col">
 				<h4 style="text-align:center">{{ snippet.title }} on page: {{ snippet.page }}</h4>
+				{% if user.is_authenticated %}{% if userprofile == article.author %}
+				<h4 style="text-align:center">
+					<a href="#">Edit</a>
+					/ 
+					<span onclick="return confirm('Are you sure ?')">
+						<a href="#">Delete</a>
+					</span> 
+				</h4>
+				{% endif %}{% endif %}
 			</div>
 			<div class="row"">
 				<div class="col-md-6">
@@ -147,6 +170,11 @@
 					rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
 					this.rows = minRows + rows;
 				});
+				
+				// Confirmation popup event handling
+				function confirm_click(){
+					return confirm("Are you sure?");
+				}
             </script>
 
 		<!-- Display each form -->

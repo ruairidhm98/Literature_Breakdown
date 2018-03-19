@@ -14,7 +14,7 @@
 		<a href="{% url 'index' %}">Return to the homepage.</a><br />
 	{% else %}
 		<strong>Write your article here!</strong><br />
-		<form id="article_form" method="post" action="{% url 'add_article' user.username %}"
+		<form id="article_form" method="post" action="{% url 'edit_article' user.username article.slug %}"
 			enctype="multipart/form-data">
 
 		{% csrf_token %}
