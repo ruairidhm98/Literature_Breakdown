@@ -4,6 +4,8 @@ from lit.models import UserProfile, Article, Comment, Snippet
 
 
 class UserForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.Textarea)
+    email = forms.CharField(widget=forms.Textarea)
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
@@ -12,6 +14,8 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    website = forms.CharField(widget=forms.Textarea)
+    name = forms.CharField(widget=forms.Textarea)
     class Meta:
         model = UserProfile
         fields = ('website', 'name', 'picture',)

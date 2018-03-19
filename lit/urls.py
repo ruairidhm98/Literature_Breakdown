@@ -25,5 +25,7 @@ urlpatterns = [
     url(r'^remove_article/(?P<username>[\w-]+)/(?P<article_name_slug>[\w-]+)/$', views.remove_article, name='remove_article'),
     url(r'^edit-snippet/(?P<article_name_slug>[\w-]+)/(?P<snippet_analysis>[\w-]+)/$', views.edit_snippet, name='edit_snippet'),
     url(r'^remove-snippet/(?P<article_name_slug>[\w-]+)/(?P<snippet_analysis>[\w-]+)/$', views.remove_snippet, name='remove_snippet'),
+    url(r'^edit-profile/$', views.edit_profile, name='edit_profile'),
+    url(r'^remove-profile/$', views.remove_profile, name='remove_profile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -630,3 +630,61 @@ def remove_snippet(request, article_name_slug, snippet_analysis):
         Snippet.objects.filter(analysis=snippet_analysis).delete()
 
     return redirect('show_article', article_name_slug=article_name_slug)
+
+@login_required
+def edit_profile(request):
+    user = User.objects.get(username=request.user.username)
+    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+    
+    user_form = UserForm(request.POST or None, instance=user)
+    profile_form = UserProfileForm(request.POST or None, instance=user)
+
+    # If the two forms are valid...
+    if user_form.is_valid() and profile_form.is_valid():
+        # Save the user's form data to the database.
+        user = user_form.save(commit=False)
+
+        # Now we hash the password with the set_password method.
+        # Once hashed, we can update the user object.
+        user.set_password(user.password)
+        user.save()
+
+        # Now sort out the UserProfile instance.
+        # Since we need to set the user attribute ourselves,
+        # we set commit=False. This delays saving the model
+        # until we're read to avoid integrity problems.
+
+        profile = profile_form.save(commit=False)
+        profile.user = user
+
+        # Did the user provide a profile picture?
+        # If so, we need to get it from the input form and
+        # put it in the UserProfile model.
+        if 'picture' in request.FILES:
+            profile.picture = request.FILES['picture']
+
+        # Now we save the UserProfile model instance.
+        profile.save()
+        
+        return redirect('profile', username=user.username)
+    else:
+        # Invalid form - mistakes or something else?
+        # Print problems to the terminal.
+        print(user_form.errors, profile_form.errors)
+        
+
+    # Render the template depending on the context.
+    return render(request,
+                  'lit/edit_profile.html',
+                  {'user_form': user_form,
+                   'profile_form': profile_form})
+
+@login_required
+def remove_profile(request):
+    user = User.objects.get(username=request.user.username)
+
+    if UserProfile.objects.filter(user=user).exists():
+        User.objects.filter(user=user).delete()
+        UserProfile.objects.filter(user=user).delete()
+
+    return redirect('profile', username=user.username)

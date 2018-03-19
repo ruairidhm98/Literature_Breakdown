@@ -44,8 +44,10 @@
 	<div class="col-md-12" style="padding-top:30px;">
 		<h4>Profile Admin Actions: 
 			<a href="{% url 'add_article' user.username %}">Add a new Analysis</a> - 
-			<a href="#">Edit Profile</a> - 
-			<a href="#">Delete Account</a>
+			<a href="{% url 'edit_profile' %}">Edit Profile</a> - 
+			<span onclick="return confirm('Are you sure?')">
+				<a href="{% url 'remove_profile' %}">Delete Account</a>
+			</span>
 		</h4>
 	</div>
 	{% endif %}
