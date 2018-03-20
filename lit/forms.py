@@ -52,12 +52,12 @@ class CommentForm(forms.ModelForm):
 
 
 class SnippetForm(forms.ModelForm):
-   title = forms.CharField(widget=forms.Textarea)
+   snippet_title = forms.CharField(widget=forms.Textarea)
    page = forms.CharField(widget=forms.Textarea)
    passage = forms.CharField(widget=forms.Textarea)
    analysis = forms.CharField(widget=forms.Textarea)
 
    class Meta:
        model = Snippet
-       fields = ('title', 'page', 'passage', 'analysis')
+       fields = ('snippet_title', 'page', 'passage', 'analysis')
 
