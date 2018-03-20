@@ -382,8 +382,16 @@ def show_article(request, article_name_slug):
                 # Now we save the Comment model instance.
                 comment.save()
 
-                # Update article average rating here
-                
+                # Update article average rating
+                comments = Comment.objects.filter(article=article)
+                rating_count = 0
+                rating = 0
+                for comment in comments:
+                    rating += comment.rating
+                    rating_count += 1
+                rating = rating/rating_count
+                article.rating = rating
+                article.save()
             else:
                 # Invalid form - mistakes or something else?
                 # Print problems to the terminal.
@@ -606,6 +614,21 @@ def remove_comment(request, id, article_name_slug):
     # If this user already has a comment object then delete it
     if Comment.objects.filter(user=userprofile).exists():
         Comment.objects.filter(id=id).delete()
+
+        # Update article average rating
+        if Comment.objects.filter(article=article).exists():
+            comments = Comment.objects.filter(article=article)
+            rating_count = 0
+            rating = 0
+            for comment in comments:
+                rating += comment.rating
+                rating_count += 1
+            rating = rating/rating_count
+            article.rating = rating
+            article.save()
+    else:
+        article.rating = 0
+        article.save()
 
     return redirect('show_article', article_name_slug=article_name_slug)
 
