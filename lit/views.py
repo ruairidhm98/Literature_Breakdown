@@ -26,7 +26,8 @@ def index(request):
 
 
 def search(request):
-    result_list = []
+    result_list_articles = []
+    result_list_users = []
     context_dict = {}
 
     if request.method == 'POST':
@@ -35,11 +36,19 @@ def search(request):
             articles = Article.objects.filter()
             for article in articles:
                 if query.upper() in article.title.upper():
-                    result_list += [article]
-            context_dict = {'result_list': result_list, 'query': query}
+                    result_list_articles += [article]
+            users = UserProfile.objects.filter()
+            for user in users:
+                if query.upper() in user.name.upper():
+                    result_list_users += [user]
+
+
         if query == "":
-            result_list = Article.objects.filter()
-            context_dict = {'result_list': result_list, 'query': query}
+            result_list_articles = Article.objects.filter()
+            result_list_users = UserProfile.objects.filter()
+
+    context_dict = {'result_list_articles': result_list_articles,
+                    'result_list_users': result_list_users, 'query': query}
 
     return render(request, 'lit/search.html', context_dict)
 
@@ -97,7 +106,7 @@ def show_category(request, category_name_slug):
         context_dict['articles'] = None
         context_dict['category'] = None
         context_dict['categories'] = None
-        
+
     return render(request, 'lit/category.html', context_dict)
 
 
@@ -178,11 +187,11 @@ def user_login(request):
         # will raise a KeyError exception.
         username = request.POST.get('username')
         password = request.POST.get('password')
-    
+
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
-    
+
         # If we have a User object, the details are correct.
         # If None (Python's way of representing the absence of a value), no user
         # with matching credentials was found.
@@ -231,7 +240,7 @@ def user_logout(request):
 
 def profile(request, username):
     context_dict = {}
-    
+
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -243,23 +252,22 @@ def profile(request, username):
     context_dict['articles'] = articles
     context_dict['numb_articles'] = len(articles)
     context_dict['selecteduser'] = user
-    
+
     # If this user already has a favourites object then use it
     if Favourites.objects.filter(user=userprofile).exists():
         favourite = Favourites.objects.get(user=userprofile)
         favourites = favourite.fav_list.all()
         context_dict['favourites'] = favourites
-        
+
     return render(request, 'lit/profile.html', context_dict)
 
 @login_required
 def edit_profile(request):
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
-    
+
     user_form = UserForm(request.POST or None, instance=user)
-    initial = {'website': ' '}
-    profile_form = UserProfileForm(request.POST or None, instance=userprofile, initial=initial)
+    profile_form = UserProfileForm(request.POST or None, instance=user)
 
     # If the two forms are valid...
     if user_form.is_valid() and profile_form.is_valid():
