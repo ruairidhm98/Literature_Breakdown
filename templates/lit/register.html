@@ -8,37 +8,71 @@
 
 
 {% block body_block %}
-	<h1 class="display-3">Register for Literature Breakdown</h1>
+	<h1 class="display-3" style="padding-top:30px;">Register here</h1>
 	{% if registered %}
 		<strong>Thank you for registering!</strong>
 		<a href="{% url 'index' %}">Return to the homepage.</a><br />
 	{% else %}
-		<strong>Register here!</strong><br />
 		<form id="user_form" method="post" action="{% url 'register' %}"
 			enctype="multipart/form-data">
 
-		{% csrf_token %}
-		<style>
-		html, body{ height: 100%; }
-		body{
-		background: #ffff;
-		display: flex; align-items: left; }
-
-		textarea{
-			display: block;
-			box-sizing: padding-box;
-			overflow: hidden;
-			padding: 5px;
-			height: 33px;
-			width: 500px;
-			font-size: 14px;
-			margin: 10px auto;
-			border-radius: 6px;
-			box-shadow: 2px 2px 8px rgba(black, .3);
-			border: 1;
-		}
+		<!-- Display each form -->
+		{% for field in user_form %}
+		<div class="fieldWrapper">
+			{{ field.errors }}
+			{{ field.label_tag }} {{ field }}
+			{% if field.help_text %}
+			<p class="help">{{ field.help_text|safe }}</p>
+			{% endif %}
+		</div>
+		{% endfor %}
 		
+		{% for field in profile_form %}
+		<div class="fieldWrapper">
+			{{ field.errors }}
+			{{ field.label_tag }} {{ field }}
+			{% if field.help_text %}
+			<p class="help">{{ field.help_text|safe }}</p>
+			{% endif %}
+		</div>
+		{% endfor %}
+		
+		{% csrf_token %}
+		
+		<!-- Style text areas -->
+		<style>
+			html, body{ 
+				height: 100%; 
+			}
+			
+			body{
+				background: #ffff;
+				display: flex; 
+				align-items: left; 
+			}
+
+			textarea, #id_password, #id_button{
+				display: block;
+				box-sizing: padding-box;
+				overflow: hidden;
+				padding: 5px;
+				height: 33px;
+				width: 500px;
+				font-size: 14px;
+				margin: 10px auto;
+				border: 1px solid rgba(0,0,0,.15);
+				border-radius: .25rem;
+			}
+			
+			#id_picture{
+				border: 0;
+			}
+			
+			#id_button{
+				background-color: #e7e7e7;
+			}
 		</style>
+		
 		<script>
 			// Applied globally on all textareas with the "autoExpand" class
 			$(document).one('focus.autoExpand', 'textarea.autoExpand', function(){
@@ -54,12 +88,8 @@
 			});
 		</script>
 
-		<!-- Display each form -->
-		{{ user_form.as_p }}
-		{{ profile_form.as_p }}
-
 		<!-- Provide a button to click to submit the form. -->
-		<input type="submit" name="submit" value="Register" />
+		<input type="submit" name="submit" value="Register" id="id_button" />
 		</form>
 	{% endif %}
 {% endblock %}

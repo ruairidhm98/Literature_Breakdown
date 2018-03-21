@@ -82,35 +82,53 @@
 	<form id="article_form" method="post" action="{% url 'add_snippet' user.username article.slug %}"
 		enctype="multipart/form-data">
 
-	{% csrf_token %}
-		<style>
-		html, body{ height: 100%; }
-		body{
-		background: #ffff;
-		display: flex; align-items: left; }
-
-		textarea{
-			display: block;
-			box-sizing: padding-box;
-			overflow: hidden;
-			padding: 5px;
-			height: 33px;
-			width: 500px;
-			font-size: 14px;
-			margin: 10px auto;
-			border-radius: 6px;
-			box-shadow: 2px 2px 8px rgba(black, .3);
-			border: 1;
-		}
+		<!-- Display the form -->
+		{% for field in snippet_form %}
+		<div class="fieldWrapper">
+			{{ field.errors }}
+			{{ field.label_tag }} {{ field }}
+			{% if field.help_text %}
+			<p class="help">{{ field.help_text|safe }}</p>
+			{% endif %}
+		</div>
+		{% endfor %}
 		
-		textarea[name=analysis] {   
-			height: 200px;
-		}  
+		{% csrf_token %}
+		
+		<!-- Style text areas -->
+		<style>
+			html, body{ 
+				height: 100%; 
+			}
+			
+			body{
+				background: #ffff;
+				display: flex; 
+				align-items: left; 
+			}
 
-		textarea[name=passage] {   
-			height: 200px;
-		}   
+			textarea, #id_password, #id_button{
+				display: block;
+				box-sizing: padding-box;
+				overflow: hidden;
+				padding: 5px;
+				height: 33px;
+				width: 500px;
+				font-size: 14px;
+				margin: 10px auto;
+				border: 1px solid rgba(0,0,0,.15);
+				border-radius: .25rem;
+			}
+			
+			textarea[name=analysis] {   
+				height: 200px;
+			}  
+			
+			#id_button{
+				background-color: #e7e7e7;
+			}
 		</style>
+		
 		<script>
 			// Applied globally on all textareas with the "autoExpand" class
 			$(document).one('focus.autoExpand', 'textarea.autoExpand', function(){
@@ -126,12 +144,8 @@
 			});
 		</script>
 
-	<!-- Display each form -->
-	{{ snippet_form.as_p }}
-
-
-	<!-- Provide a button to click to submit the form. -->
-	<input type="submit" name="submit" value="Submit" />
+		<!-- Provide a button to click to submit the form. -->
+		<input type="submit" name="submit" value="Submit" id="id_button" />
 	</form>
 	
 	<div style="padding-top:30px;">

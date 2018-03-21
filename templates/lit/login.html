@@ -14,13 +14,40 @@
 	{% endif %}
 	<form id="login_form" method="post" action="{% url 'login' %}">
 		{% csrf_token %}
-		Username: <input type="text" name="username" value="" size="50" />
+		<p style="text-align: center">Username</p><input type="text" name="username" value="" size="50" id="userfield" />
 		<br />
-		Password: <input type="password" name="password" value="" size="50" />
+		<p style="text-align: center">Password</pl><input type="password" name="password" value="" size="50" id="passfield" />
 		<br />
-		<input type="submit" value="submit" />
+		<input type="submit" value="Submit" id="id_button" />
 	</form>
 	
+	<!-- Style text areas -->
+		<style>
+			html, body{ 
+				height: 100%; 
+			}
+			
+			body{
+				background: #ffff;
+				display: flex; 
+				align-items: left; 
+			}
+
+			#userfield, #passfield, #id_button{
+				display: block;
+				box-sizing: padding-box;
+				overflow: hidden;
+				padding: 5px;
+				height: 33px;
+				width: 500px;
+				font-size: 14px;
+				margin: 10px auto;
+				border: 1px solid rgba(0,0,0,.15);
+				border-radius: .25rem;
+			}
+			
+			
+		</style>
 {% endblock %}
 
 
