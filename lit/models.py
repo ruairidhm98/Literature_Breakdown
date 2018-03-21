@@ -9,12 +9,12 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     # The additional attributes we wish to include.
-    website = models.URLField(blank=True)
+    website = models.URLField(blank=True,default="")
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=128)
     num_articles = models.IntegerField(default=0)
     slug = models.SlugField()
-    age = models.IntegerField()
+    age = models.IntegerField(default=16)
     gender = models.CharField(max_length=4, default="")
     location = models.CharField(max_length=128)
 

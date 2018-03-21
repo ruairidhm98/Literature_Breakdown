@@ -15,6 +15,7 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     website = forms.CharField(widget=forms.Textarea)
+    website = ""
     name = forms.CharField(widget=forms.Textarea)
     class Meta:
         model = UserProfile

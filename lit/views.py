@@ -133,7 +133,6 @@ def register(request):
             # Since we need to set the user attribute ourselves,
             # we set commit=False. This delays saving the model
             # until we're read to avoid integrity problems.
-
             profile = profile_form.save(commit=False)
             profile.user = user
 
@@ -145,6 +144,7 @@ def register(request):
 
             # Now we save the UserProfile model instance.
             profile.save()
+
 
             # Update our variable to indicate that the template
             # registration was successful.
