@@ -258,7 +258,8 @@ def edit_profile(request):
     userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
     
     user_form = UserForm(request.POST or None, instance=user)
-    profile_form = UserProfileForm(request.POST or None, instance=user)
+    initial = {'website': ' '}
+    profile_form = UserProfileForm(request.POST or None, instance=userprofile, initial=initial)
 
     # If the two forms are valid...
     if user_form.is_valid() and profile_form.is_valid():

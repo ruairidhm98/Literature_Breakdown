@@ -14,9 +14,8 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    website = forms.CharField(widget=forms.Textarea)
-    website = ""
-    name = forms.CharField(widget=forms.Textarea)
+    website = forms.CharField(widget=forms.Textarea, required=False)
+    name = forms.CharField(widget=forms.Textarea, required=False)
     class Meta:
         model = UserProfile
         fields = ('website', 'name', 'picture',)
