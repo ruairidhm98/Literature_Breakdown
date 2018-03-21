@@ -43,25 +43,48 @@
 			{% endif %}
 			</ul>
 		</nav>
-			
+		
+		<div>
+			<h1 class="display-3">New Articles as of: {{ date_today }}</h1>
+		</div>
+	
 		<div class="row marketing">
-		  <div class="col-lg-8">
-			<p>
+			<div class="col-lg-12">
 			{% if articles_new %}
-			<ul>
 			{% for article in articles_new %}
-				<a href="{% url 'show_article' article.slug %}">
-				<li>{{ article.title }}</li>
-				</a>
+				<div class="row" style = "padding-bottom:5px; padding-top:5px; border-bottom: 1px solid #eee;">
+					<div class="col-lg-3">
+						<a href="{% url 'show_article' article.slug %}">
+						<img src="{{ MEDIA_URL }}{{ article.img }}"
+							 width="250"
+							 height="350"
+							 alt="Cover" 
+							 style="max-width: 100%;
+									height: auto;
+									width: auto\9;"/>
+						</a>
+					</div>
+					<div class="col-lg-9">
+						<div class="row">
+							<a href="{% url 'show_article' article.slug %}"><h2>{{ article.title }}</h2></a>
+						</div>
+						<div class="row">
+							<h2>{{ article.rating }}</h2>
+						</div>
+						<div class="row">
+							<h2>{{ article.category }}</h2>
+						</div>
+						<div class="row">
+							<h2>{{ article.date_published }}</h2>
+						</div>
+					</div>
+				</div>
 			{% endfor %}
-			</ul>
 			{% else %}
 			<strong>There are no new articles to show.</strong>
 			{% endif %}
-			</p>
-		  </div>
+			</div>
 		</div>
-
 	</div>
 	</div>
 {% endblock %}

@@ -64,16 +64,20 @@ def faq(request):
 def new_articles(request):
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
+    date_today = datetime.now().strftime("%d/%m/%Y")
     context_dict = {'articles_new': article_list_new,
-                    'categories': category_list}
+                    'categories': category_list,
+                    'date_today': date_today}
     return render(request, 'lit/new.html', context=context_dict)
 
 
 def trending_articles(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
     category_list = Category.objects.all()
+    date_today = datetime.now().strftime("%d/%m/%Y")
     context_dict = {'articles_trending' : article_list_trending,
-                    'categories': category_list}
+                    'categories': category_list,
+                    'date_today': date_today}
     return render(request, 'lit/trending.html', context=context_dict)
 
 def show_category(request, category_name_slug):
