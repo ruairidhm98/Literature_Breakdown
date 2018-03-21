@@ -47,6 +47,9 @@ def search(request):
             result_list_articles = Article.objects.filter()
             result_list_users = UserProfile.objects.filter()
 
+    result_list_articles = sorted(result_list_articles,  key = lambda article: article.title.upper())
+    result_list_users = sorted(result_list_users, key = lambda user: user.name.upper())
+
     context_dict = {'result_list_articles': result_list_articles,
                     'result_list_users': result_list_users, 'query': query}
 
