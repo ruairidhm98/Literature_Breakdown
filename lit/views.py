@@ -66,13 +66,13 @@ def search(request):
     article_date_ascending = sorted(result_list_articles,key=lambda article: article.date_published)
     article_views_ascending = sorted(result_list_articles,key=lambda article: article.views)
     user_age_ascending = sorted(result_list_users,key=lambda user: user.age)
-    user_num_articles_ascending = sorter(result_list_users,key=lambda user: user.num_articles)
+    user_num_articles_ascending = sorted(result_list_users,key=lambda user: user.num_articles)
     #descending next
     article_rating_descending = sorted(result_list_articles, key = lambda article: article.rating,reverse=True)
     article_date_descending = sorted(result_list_articles,key=lambda article: article.date_published,reverse=True)
     articles_views_descending = sorted(result_list_articles,key=lambda article: article.views,reverse=True)
     user_age_descending = sorted(result_list_users,key=lambda user: user.age,reverse=True)
-    user_num_articles_descending = sorter(result_list_users,key=lambda user: user.num_articles,reverse=True)
+    user_num_articles_descending = sorted(result_list_users,key=lambda user: user.num_articles,reverse=True)
 
     context_dict = {'result_list_articles': result_list_articles,
                     'result_list_users': result_list_users,

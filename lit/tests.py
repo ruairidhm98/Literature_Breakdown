@@ -11,6 +11,6 @@ class ArticleMethodTest(TestCase):
         :return:
         """
 
-        art = Article(title='test',views=-1)
+        art = Article(title='test',views=-1, author=UserProfile.objects.filter(name=''))
         art.save()
         seld.assertEqual((art.views>=0),True)
