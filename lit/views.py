@@ -26,14 +26,15 @@ def index(request):
 
 
 def search(request):
-    result_list_articles = []
-    result_list_users = []
+    result_list_articles = [] #list of articles found by search
+    result_list_users = [] #list of users found by search
     article_rating_ascending = [] #list of articles sorted ascending by rating
     article_rating_descending = [] #list of articles sorted descending by rating
     article_date_ascending = [] #list of articles sorted ascending by date published
     article_date_descending = [] #list of articles sorted descending by date published
     article_views_ascending = [] #list of articles sorted ascending by views
     articles_views_descending = [] #list of articles sorted descending by views
+
     context_dict = {}
 
     if request.method == 'POST':
@@ -45,7 +46,7 @@ def search(request):
                     result_list_articles += [article]
             users = UserProfile.objects.filter()
             for user in users:
-                if query.upper() in user.name.upper() or query.upper() in user.username:
+                if query.upper() in user.name.upper() or query.upper() in user.user.username.upper():
                     result_list_users += [user]
 
 
