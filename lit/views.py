@@ -302,7 +302,10 @@ def edit_profile(request):
 
         # Now we save the UserProfile model instance.
         profile.save()
-        
+
+        # Log the user back in after having changed their data
+        login(request, user)
+            
         return redirect('profile', username=user.username)
     else:
         # Invalid form - mistakes or something else?

@@ -26,23 +26,28 @@
 				<div class="col-md-10"><h1 class="display-3">{{ selecteduser.username }}</h1></div>
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-4"><h4 style="text-align: center">{{ selecteduser.email }}</h4></div>
-				<div class="col-md-4"><h4 style="text-align: center">{{ selecteduser.first_name }} {{ selecteduser.last_name }}</h4></div>
-				<div class="col-md-4"><h4 style="text-align: center">{{ userprofile.website }}</h4></div>
+				<div class="col-md-6"><h4>Email: {{ selecteduser.email }}</h4></div>
+				{% if selecteduser.first_name %}
+				<div class="col-md-6"><h4>Name: {{ selecteduser.first_name }} {{ selecteduser.last_name }}</h4></div>
+				{% endif %}
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-6"><h4 style="text-align: center">Joined: {{ selecteduser.date_joined }}</h4></div>
-				<div class="col-md-6"><h4 style="text-align: center">Last Seen: {{ selecteduser.last_login }}</h4></div>
+				<div class="col-md-6"><h4>Joined: {{ selecteduser.date_joined }}</h4></div>
+				<div class="col-md-6"><h4>Last Seen: {{ selecteduser.last_login }}</h4></div>
 			</div>
 			<div class="row" style="padding-top:30px;"> 
 				<div class="col-md-12"><h4>Analyses Written: {{ numb_articles }}</h4></div>
+				{% if userprofile.website %}
+				<div class="col-md-4"><h4>Website: {{ userprofile.website }}</h4></div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
 	
 	{% if user.username == selecteduser.username %}
 	<div class="col-md-12" style="padding-top:30px;">
-		<h4>Profile Admin Actions: 
+		<h1 style="text-align:center">Profile Admin Actions</h1>
+		<h4 style="text-align: center;">
 			<a href="{% url 'add_article' user.username %}">Add a new Analysis</a> - 
 			<a href="{% url 'edit_profile' %}">Edit Profile</a> - 
 			<span onclick="return confirm('Are you sure?')">

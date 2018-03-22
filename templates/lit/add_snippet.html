@@ -24,16 +24,17 @@
 				<div class="col-md-10"><h1 class="display-3">{{ article.title }}</h1></div>
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
-				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
-				<div class="col-md-3"><h4><a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
+				<div class="col-md-4"><h4>Submitted: {{ article.date_published }}</h4></div>
+				<div class="col-md-4"><h4>Rating: {{ article.rating }}</h4></div>
+				<div class="col-md-4"><h4>Author: <a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
 			</div>
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-3"><h4>{{ article.category }}</h4></div>
-				<div class="col-md-3"><h4>{{ article.book }}</h4></div>
+				<div class="col-md-4"><h4>Book Title: {{ article.book }}</h4></div>
+				<div class="col-md-4"><h4>Book Author: {{ article.book_author }}</h4></div>
+				<div class="col-md-4"><h4>Book Published: {{ article.book_published }}</h4></div>
 			</div>
 			<div class="row" style="padding-top:30px;"> 
-				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
+				<div class="col-md-4"><h4>Category: {{ article.category }}</h4></div>
 			</div>
 		</div>
 	</div>
@@ -124,8 +125,15 @@
 				height: 200px;
 			}  
 			
-			#id_button{
-				background-color: #e7e7e7;
+			#id_button {
+				transition-duration: 0.4s;
+				background-color: white;
+				color: #292b2c;
+			}
+
+			#id_button:hover {
+				background-color: #292b2c;
+				color: white;
 			}
 		</style>
 		
