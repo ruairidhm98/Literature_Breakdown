@@ -8,36 +8,22 @@
 
 
 {% block body_block %}
-	<h1 class="display-3" style="padding-top:30px;">Register here</h1>
-	{% if registered %}
-		<strong>Thank you for registering!</strong>
-		<a href="{% url 'index' %}">Return to the homepage.</a><br />
-	{% else %}
-		<form id="user_form" method="post" action="{% url 'register' %}"
-			enctype="multipart/form-data">
+	<h1 class="display-3" style="padding-top:20px;">Edit your Snippet</h1>
+	<form id="snippet_form" method="post" action="{% url 'edit_snippet' %}"
+		enctype="multipart/form-data">
 
-		<!-- Display each form -->
-		{% for field in user_form %}
-		<div class="fieldWrapper">
-			{{ field.errors }}
-			{{ field.label_tag }} {{ field }}
-			{% if field.help_text %}
-			<p class="help">{{ field.help_text|safe }}</p>
-			{% endif %}
-		</div>
-		{% endfor %}
-		
-		{% for field in profile_form %}
-		<div class="fieldWrapper">
-			{{ field.errors }}
-			{{ field.label_tag }} {{ field }}
-			{% if field.help_text %}
-			<p class="help">{{ field.help_text|safe }}</p>
-			{% endif %}
-		</div>
-		{% endfor %}
-		
 		{% csrf_token %}
+		
+		<!-- Display the form -->
+		{% for field in snippet_form %}
+		<div class="fieldWrapper">
+			{{ field.errors }}
+			{{ field.label_tag }} {{ field }}
+			{% if field.help_text %}
+			<p class="help">{{ field.help_text|safe }}</p>
+			{% endif %}
+		</div>
+		{% endfor %}
 		
 		<!-- Style text areas -->
 		<style>
@@ -96,7 +82,6 @@
 		</script>
 
 		<!-- Provide a button to click to submit the form. -->
-		<input type="submit" name="submit" value="Register" id="id_button" />
-		</form>
-	{% endif %}
+		<input type="submit" name="submit" value="Save" id="id_button" />
+	</form>
 {% endblock %}

@@ -22,41 +22,46 @@
 			<div class="row">
 				<div class="col-md-10"><h1 class="display-3">{{ article.title }}</h1></div>
 			</div>
-			{% if user.is_authenticated %}{% if userprofile == article.author %}
-			<div class="row"> 
-				<div class="col-md-10">
-					<h4>
-						Analysis Author Actions: 
-						<a href="{% url 'edit_article' user.username article.slug %}">Edit</a>
-						/ 
-						<span onclick="return confirm('Are you sure?')">
-							<a href="{% url 'remove_article' user.username article.slug %}">Delete</a>
-						</span> 
-					</h4>
-				</div>
-			</div>
-			{% endif %}{% endif %}
 			<div class="row" style="padding-top:30px;">
-				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
-				<div class="col-md-3"><h4>{{ article.rating }}</h4></div>
-				<div class="col-md-3"><h4><a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
+				<div class="col-md-4"><h4>Submitted: {{ article.date_published }}</h4></div>
+				<div class="col-md-4"><h4>Rating: {{ article.rating }}</h4></div>
+				<div class="col-md-4"><h4>Author: <a href="{% url 'profile' article.author %}">{{ article.author }}</a></h4></div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				{% if article.book %}
+				<div class="col-md-4"><h4>Book Title: {{ article.book }}</h4></div>
+				{% endif %}
+				{% if article.book_author %}
+				<div class="col-md-4"><h4>Book Author: {{ article.book_author }}</h4></div>
+				{% endif %}
+				{% if article.book_published %}
+				<div class="col-md-4"><h4>Book Published: {{ article.book_published }}</h4></div>
+				{% endif %}
+			</div>
+			<div class="row" style="padding-top:30px;"> 
+				<div class="col-md-4"><h4>Category: {{ article.category }}</h4></div>
 				{% if user.is_authenticated %}
 					{% if favourited %}
-					<div class="col-md-3"><h4><a href="{% url 'remove_favourite' user.username article.slug %}">Remove from Favourites</a></h4></div>
+					<div class="col-md-4"><h4><a href="{% url 'remove_favourite' user.username article.slug %}">Remove from Favourites</a></h4></div>
 					{% else %}
-					<div class="col-md-3"><h4><a href="{% url 'add_favourite' user.username article.slug %}">Add to Favourites</a></h4></div>
+					<div class="col-md-4"><h4><a href="{% url 'add_favourite' user.username article.slug %}">Add to Favourites</a></h4></div>
 					{% endif %}
 				{% endif %}
 			</div>
-			<div class="row" style="padding-top:30px;">
-				<div class="col-md-3"><h4>{{ article.category }}</h4></div>
-				<div class="col-md-3"><h4>{{ article.book }}</h4></div>
-			</div>
-			<div class="row" style="padding-top:30px;"> 
-				<div class="col-md-3"><h4>{{ article.date_published }}</h4></div>
-			</div>
 		</div>
 	</div>
+	
+	{% if user.is_authenticated and userprofile == article.author %}
+	<div class="col-md-12" style="padding-top:30px;">
+		<h1 style="text-align:center">Analysis Author Actions</h1>
+		<h4 style="text-align: center;">
+			<a href="{% url 'edit_article' user.username article.slug %}">Edit Analysis</a> - 
+			<span onclick="return confirm('Are you sure?')">
+				<a href="{% url 'remove_article' user.username article.slug %}">Delete Analysis</a>
+			</span> 
+		</h4>
+	</div>
+	{% endif %}
 	
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">General Analysis</h1>
@@ -126,7 +131,7 @@
 	</div>
 	{% endif %}
 	
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and can_comment %}
 	<div style="padding-top:30px;">
 		<form id="comment_form" method="post" action="{% url 'show_article' article.slug %}"
 			enctype="multipart/form-data">
@@ -173,9 +178,16 @@
 				border: 0;
 			}
 			
-			#id_button{
-				background-color: #e7e7e7;
-			}    
+			#id_button {
+				transition-duration: 0.4s;
+				background-color: white;
+				color: #292b2c;
+			}
+
+			#id_button:hover {
+				background-color: #292b2c;
+				color: white;
+			}  
 			
 			#id_user_comment{
 				height: 200px;

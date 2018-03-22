@@ -183,10 +183,12 @@ def register(request):
             # Now we save the UserProfile model instance.
             profile.save()
 
-
             # Update our variable to indicate that the template
             # registration was successful.
             registered = True
+
+            login(request, user)
+            return redirect('profile', username=user.username)
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -230,7 +232,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect(reverse('index'))
+                return redirect('profile', username=user.username)
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your Literature Breakdown account is disabled.")
@@ -324,7 +326,10 @@ def edit_profile(request):
 
         # Now we save the UserProfile model instance.
         profile.save()
-        
+
+        # Log the user back in after having changed their data
+        login(request, user)
+            
         return redirect('profile', username=user.username)
     else:
         # Invalid form - mistakes or something else?
@@ -343,7 +348,7 @@ def remove_profile(request):
     user = User.objects.get(username=request.user.username)
 
     if UserProfile.objects.filter(user=user).exists():
-        User.objects.filter(user=user).delete()
+        User.objects.filter(username=user.username).delete()
         UserProfile.objects.filter(user=user).delete()
 
     return redirect('profile', username=user.username)
@@ -400,6 +405,12 @@ def show_article(request, article_name_slug):
                 context_dict['favourited'] = True
 
         # COMMENT FORM HANDLING
+        # Check if the user has already commented on this article
+        can_comment = True
+        if (Comment.objects.filter(article=article, user=userprofile).exists()) or (article.author==userprofile):
+            can_comment = False
+        context_dict['can_comment'] = can_comment
+        
         # If it's a HTTP POST, we're interested in processing form data.
         if request.method == 'POST':
             # Attempt to grab information from the raw form information.
@@ -482,7 +493,7 @@ def add_article(request, username):
             userprofile = UserProfile.objects.get_or_create(user=user)[0]
             article.author = userprofile
 
-            article.date_published = datetime.datetime.now().strftime("%Y-%m-%d")
+            article.date_published = datetime.now().strftime("%Y/%m/%d")
             # Now we save the Article model instance.
             article.save()
 
@@ -767,7 +778,7 @@ def edit_snippet(request, article_name_slug, snippet_id):
     # Render the template depending on the context.
     return render(request,
                    'lit/edit_snippet.html',
-                   {'snippet_form': article_form,
+                   {'snippet_form': snippet_form,
                     'article': article})
 
 @login_required
