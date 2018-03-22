@@ -34,7 +34,10 @@ def search(request):
     article_date_descending = [] #list of articles sorted descending by date published
     article_views_ascending = [] #list of articles sorted ascending by views
     articles_views_descending = [] #list of articles sorted descending by views
-
+    user_age_ascending = [] #list of users sorted ascending by age
+    user_age_descending = [] #list of users sorted descending by age
+    user_num_articles_ascending = [] #list of users sorted ascending by number of articles made
+    user_num_articles_descending = [] #list of users sorted descending by number of articles made
     context_dict = {}
 
     if request.method == 'POST':
@@ -62,19 +65,28 @@ def search(request):
     article_rating_ascending = sorted(result_list_articles, key = lambda article: article.rating)
     article_date_ascending = sorted(result_list_articles,key=lambda article: article.date_published)
     article_views_ascending = sorted(result_list_articles,key=lambda article: article.views)
+    user_age_ascending = sorted(result_list_users,key=lambda user: user.age)
+    user_num_articles_ascending = sorter(result_list_users,key=lambda user: user.num_articles)
     #descending next
     article_rating_descending = sorted(result_list_articles, key = lambda article: article.rating,reverse=True)
     article_date_descending = sorted(result_list_articles,key=lambda article: article.date_published,reverse=True)
     articles_views_descending = sorted(result_list_articles,key=lambda article: article.views,reverse=True)
+    user_age_descending = sorted(result_list_users,key=lambda user: user.age,reverse=True)
+    user_num_articles_descending = sorter(result_list_users,key=lambda user: user.num_articles,reverse=True)
 
     context_dict = {'result_list_articles': result_list_articles,
-                    'result_list_users': result_list_users, 'query': query,
+                    'result_list_users': result_list_users,
+                    'query': query,
                     'article_rating_ascending' : article_rating_ascending,
                     'article_date_ascending' : article_date_ascending,
                     'article_views_ascending' : article_views_ascending,
                     'article_rating_descending' : article_rating_descending,
                     'article_date_descending' : article_date_descending,
-                    'articles_views_descending' : articles_views_descending}
+                    'articles_views_descending' : articles_views_descending,
+                    'user_age_ascending': user_age_ascending,
+                    'user_num_articles_ascending' : user_num_articles_ascending,
+                    'user_age_descending' : user_age_descending,
+                    'user_num_articles_descending' : user_num_articles_descending}
 
     return render(request, 'lit/search.html', context_dict)
 
