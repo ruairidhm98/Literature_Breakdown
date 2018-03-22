@@ -381,6 +381,12 @@ def show_article(request, article_name_slug):
                 context_dict['favourited'] = True
 
         # COMMENT FORM HANDLING
+        # Check if the user has already commented on this article
+        can_comment = True
+        if Comment.objects.filter(article=article, user=userprofile).exists():
+            can_comment = False
+        context_dict['can_comment'] = can_comment
+        
         # If it's a HTTP POST, we're interested in processing form data.
         if request.method == 'POST':
             # Attempt to grab information from the raw form information.

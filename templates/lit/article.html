@@ -131,7 +131,7 @@
 	</div>
 	{% endif %}
 	
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and can_comment %}
 	<div style="padding-top:30px;">
 		<form id="comment_form" method="post" action="{% url 'show_article' article.slug %}"
 			enctype="multipart/form-data">
