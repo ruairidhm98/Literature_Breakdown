@@ -4,6 +4,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 # Create your tests here.
 
+def create_user_prof():
+    user = User(username='test', password='test')
+    user.save()
+
+    user_prof = UserProfile(name='test', user=user)
+    user_prof.save()
+
+    return user_prof
+
 def add_art(name, views, author):
     c = Article.objects.get_or_create(author=author)[0]
     c.views = views
@@ -20,13 +29,9 @@ class ArticleMethodTest(TestCase):
         :return:
         """
 
-        user = User(username='test1',password='test1')
-        user.save()
+        user_prof = create_user_prof()
 
-        user_prof = UserProfile(name='test1',user=user)
-        user_prof.save()
-
-        art = Article(title='test1',views=-1,author=user_prof)
+        art = Article(title='test',views=-1,author=user_prof)
         art.save()
         self.assertEqual((art.views>=0),True)
 
@@ -47,11 +52,7 @@ class IndexViewTests(TestCase):
         Check to make sure that the index has articles displayed
         """
 
-        user = User(username='test2', password='test2')
-        user.save()
-
-        user_prof = UserProfile(name='test2', user=user)
-        user_prof.save()
+        user_prof = create_user_prof()
 
         add_art('test',1,user_prof)
         add_art('temp',1,user_prof)
@@ -60,7 +61,7 @@ class IndexViewTests(TestCase):
 
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response.context['articles_new'],"tmp test temp")
+        self.assertContains(response,"tmp test temp")
 
         num_art = len(response.context['articles_new'])
         self.asserEqual(num_art, 4)
