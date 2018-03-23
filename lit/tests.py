@@ -12,13 +12,13 @@ class ArticleMethodTest(TestCase):
         :return:
         """
 
-        user = User(username='test',password='test')
+        user = User(username='test1',password='test1')
         user.save()
 
-        user_prof = UserProfile(name='test',user=user)
+        user_prof = UserProfile(name='test1',user=user)
         user_prof.save()
 
-        art = Article(title='test',views=-1,author=user_prof)
+        art = Article(title='test1',views=-1,author=user_prof)
         art.save()
         self.assertEqual((art.views>=0),True)
 

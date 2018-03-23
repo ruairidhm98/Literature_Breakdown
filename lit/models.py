@@ -45,6 +45,8 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Article, self).save(*args, **kwargs)
+        if self.views < 0 :
+            self.views = self.views * -1
 
     def __str__(self):
         return self.title
