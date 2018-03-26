@@ -4,6 +4,7 @@
 {% load staticfiles %}
 
 {% block title_block %}
+	Trending Articles
 {% endblock %}
 
 
@@ -55,13 +56,23 @@
 				<div class="row" style = "padding-bottom:5px; padding-top:5px; border-bottom: 1px solid #eee;">
 					<div class="col-lg-3">
 						<a href="{% url 'show_article' article.slug %}">
+						{% if article.img %}
 						<img src="{{ MEDIA_URL }}{{ article.img }}"
-							 width="250"
-							 height="350"
-							 alt="Cover" 
+							 width="300"
+							 height="400"
+							 alt={{ article.title }} 
 							 style="max-width: 100%;
 									height: auto;
 									width: auto\9;"/>
+						{% else %}
+						<img src="{% static 'dummy_book.png' %}"
+							 width="300"
+							 height="400"
+							 alt={{ article.title }} 
+							 style="max-width: 100%;
+									height: auto;
+									width: auto\9;"/>
+						{% endif %}
 						</a>
 					</div>
 					<div class="col-lg-9">

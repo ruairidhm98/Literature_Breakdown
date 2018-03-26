@@ -14,7 +14,7 @@ from datetime import datetime
 
 def index(request):
     article_list_trending = Article.objects.order_by('-rating')[:5]
-    article_list_new = Article.objects.order_by('date_published')[:5]
+    article_list_new = Article.objects.order_by('-date_published')[:5]
     category_list = Category.objects.all()
     
     context_dict = {'articles_new': article_list_new,
@@ -309,7 +309,7 @@ def edit_profile(request):
     userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
 
     user_form = UserForm(request.POST or None, instance=user)
-    profile_form = UserProfileForm(request.POST or None, instance=user)
+    profile_form = UserProfileForm(request.POST or None, instance=userprofile)
 
     # If the two forms are valid...
     if user_form.is_valid() and profile_form.is_valid():
@@ -326,18 +326,17 @@ def edit_profile(request):
         # we set commit=False. This delays saving the model
         # until we're read to avoid integrity problems.
 
-        profile = profile_form.save(commit=False)
-        profile.user = user
+        userprofile = profile_form.save(commit=False)
+        userprofile.user = user
 
         # Did the user provide a profile picture?
         # If so, we need to get it from the input form and
         # put it in the UserProfile model.
         if 'picture' in request.FILES:
-            print("Gonna change this pic!")
-            profile.picture = request.FILES['picture']
+            userprofile.picture = request.FILES['picture']
 
         # Now we save the UserProfile model instance.
-        profile.save()
+        userprofile.save()
 
         # Log the user back in after having changed their data
         login(request, user)
@@ -451,6 +450,7 @@ def show_article(request, article_name_slug):
                     rating += comment.rating
                     rating_count += 1
                 rating = rating/rating_count
+                round(rating,1)
                 article.rating = rating
                 article.save()
             else:
@@ -505,7 +505,7 @@ def add_article(request, username):
             userprofile = UserProfile.objects.get_or_create(user=user)[0]
             article.author = userprofile
 
-            article.date_published = datetime.now().strftime("%Y/%m/%d")
+            article.date_published = datetime.now().strftime("%d/%m/%y")
             # Now we save the Article model instance.
             article.save()
 
@@ -685,6 +685,7 @@ def remove_comment(request, id, article_name_slug):
                 rating += comment.rating
                 rating_count += 1
             rating = rating/rating_count
+            round(rating,1)
             article.rating = rating
             article.save()
     else:
@@ -767,10 +768,11 @@ def edit_snippet(request, article_name_slug, snippet_id):
     except (Article.DoesNotExist, Snippet.DoesNotExist) as error:
         print(error)
         return redirect('article')
-    
+
+    context_dict = {}
     snippet = get_object_or_404(Snippet, id=snippet_id)
     snippet_form = SnippetForm(request.POST or None, instance=snippet)
-    
+
     if snippet_form.is_valid():
         # Delete the pre-existing snippet
         
@@ -785,13 +787,13 @@ def edit_snippet(request, article_name_slug, snippet_id):
         # Invalid form - mistakes or something else?
         # Print problems to the terminal.
         print(snippet_form.errors)
-        
+
+    context_dict['article'] = article
+    context_dict['snippet'] = snippet
+    context_dict['snippet_form'] = snippet_form
 
     # Render the template depending on the context.
-    return render(request,
-                   'lit/edit_snippet.html',
-                   {'snippet_form': snippet_form,
-                    'article': article})
+    return render(request, 'lit/edit_snippet.html', context_dict)
 
 @login_required
 def remove_snippet(request, article_name_slug, snippet_id):

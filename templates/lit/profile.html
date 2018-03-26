@@ -3,7 +3,9 @@
 {% extends 'lit/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}{{ user.username }} Profile{% endblock %}
+{% block title_block %}
+	{{ user.username }} Profile
+{% endblock %}
 
 
 {% block body_block %}
@@ -15,10 +17,10 @@
 				 height="300"
 				 alt={{ user.username }} />
 			{% else %}
-			<img src="http://lorempixel.com/300/300/people/"
+			<img src="{% static 'dummy.png' %}"
 				 width="300"
 				 height="300"
-				 alt={{ user.username }} />
+				 alt={{ selecteduser.username }} />
 			{% endif %}
 		</div>
 		<div class="col-md-9">

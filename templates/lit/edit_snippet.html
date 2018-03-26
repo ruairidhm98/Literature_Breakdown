@@ -9,12 +9,13 @@
 {% endblock %}
 
 {% block title_block %}
+	Edit {{ snippet.snippet_title }}
 {% endblock %}
 
 
 {% block body_block %}
 	<h1 class="display-3" style="padding-top:20px;">Edit your Snippet</h1>
-	<form id="snippet_form" method="post" action="{% url 'edit_snippet' %}"
+	<form id="snippet_form" method="post" action="{% url 'edit_snippet' article.slug snippet.id %}"
 		enctype="multipart/form-data">
 
 		{% csrf_token %}

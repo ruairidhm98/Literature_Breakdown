@@ -9,6 +9,7 @@
 {% endblock %}
 	
 {% block title_block %}
+	Writing {{ article.title }}
 {% endblock %}
 
 
@@ -16,13 +17,23 @@
 	<h1 class="display-3" style="text-align:center;">Preview Article and Add Snippets</h1>
 	<div class="row" style="padding-top:30px;">
 		<div class="col-md-3">
+			{% if article.img %}
 			<img src="{{ MEDIA_URL }}{{ article.img }}"
 				 width="300"
 				 height="400"
-				 alt="Cover" 
+				 alt={{ article.title }} 
 				 style="max-width: 100%;
 						height: auto;
 						width: auto\9;"/>
+			{% else %}
+			<img src="{% static 'dummy_book.png' %}"
+				 width="300"
+				 height="400"
+				 alt={{ article.title }} 
+				 style="max-width: 100%;
+						height: auto;
+						width: auto\9;"/>
+			{% endif %}
 		</div>
 		<div class="col-md-9">
 			<div class="row">
