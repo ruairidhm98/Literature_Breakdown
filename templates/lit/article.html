@@ -3,6 +3,11 @@
 {% extends 'lit/base.html' %}
 {% load staticfiles %}
 
+{% block css_block %}
+	<!-- Bootstrap style edits -->
+    <link href="{% static 'css/lit.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block title_block %}
 {% endblock %}
 

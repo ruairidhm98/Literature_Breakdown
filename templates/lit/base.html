@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{% static 'icon.png' %}">
 
-    <title>Literature Breakdown - {% block title %}Welcome!{% endblock %}</title>
+    <title>Literature Breakdown - {% block title_block %}Welcome!{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,8 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="http://v4-alpha.getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
 	
-	<!-- Bootstrap style edits -->
-    <link href="{% static 'css/lit.css' %}" rel="stylesheet">
+	{% block css_block %}{% endblock %}
   </head>
 
   <body>
