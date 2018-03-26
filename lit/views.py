@@ -9,7 +9,6 @@ from django import forms
 from lit.models import *
 from lit.forms import *
 from datetime import datetime
-from lit.webhose_search import run_query
 
 
 ###################### FRONTPAGE VIEWS ######################
