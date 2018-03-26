@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 from django import forms
 from lit.models import *
 from lit.forms import *
@@ -334,6 +333,7 @@ def edit_profile(request):
         # If so, we need to get it from the input form and
         # put it in the UserProfile model.
         if 'picture' in request.FILES:
+            print("Gonna change this pic!")
             profile.picture = request.FILES['picture']
 
         # Now we save the UserProfile model instance.
