@@ -13,7 +13,7 @@ textarea, #userfield, #passfield, #id_password, #id_button, #id_age, #id_rating{
 	box-sizing: padding-box;
 	overflow: hidden;
 	padding: 5px;
-	height: 33px;
+	height: auto;
 	width: 500px;
 	font-size: 14px;
 	margin: 10px auto;

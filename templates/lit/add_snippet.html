@@ -7,7 +7,7 @@
 	<!-- Bootstrap style edits -->
     <link href="{% static 'css/lit.css' %}" rel="stylesheet">
 {% endblock %}
-	
+
 {% block title_block %}
 	Writing {{ article.title }}
 {% endblock %}
@@ -21,7 +21,7 @@
 			<img src="{{ MEDIA_URL }}{{ article.img }}"
 				 width="300"
 				 height="400"
-				 alt={{ article.title }} 
+				 alt={{ article.title }}
 				 style="max-width: 100%;
 						height: auto;
 						width: auto\9;"/>
@@ -29,7 +29,7 @@
 			<img src="{% static 'dummy_book.png' %}"
 				 width="300"
 				 height="400"
-				 alt={{ article.title }} 
+				 alt={{ article.title }}
 				 style="max-width: 100%;
 						height: auto;
 						width: auto\9;"/>
@@ -49,17 +49,17 @@
 				<div class="col-md-4"><h4>Book Author: {{ article.book_author }}</h4></div>
 				<div class="col-md-4"><h4>Book Published: {{ article.book_published }}</h4></div>
 			</div>
-			<div class="row" style="padding-top:30px;"> 
+			<div class="row" style="padding-top:30px;">
 				<div class="col-md-4"><h4>Category: {{ article.category }}</h4></div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">General Analysis</h1>
 		<p style="text-align:center">{{ article.analysis}}</p>
 	</div>
-	
+
 	{% if snippets %}
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">Snippets</h1>
@@ -90,12 +90,12 @@
 		{% endfor %}
 	</div>
 	{% endif %}
-	
-	
+
+
 	<div style="padding-top:30px;">
 		<h1 style="text-align:center">Add a Snippet</h1>
 	</div>
-	
+
 	<form id="article_form" method="post" action="{% url 'add_snippet' user.username article.slug %}"
 		enctype="multipart/form-data">
 
@@ -109,19 +109,19 @@
 			{% endif %}
 		</div>
 		{% endfor %}
-		
+
 		{% csrf_token %}
-		
+
 		<!-- Style text areas -->
 		<style>
-			html, body{ 
-				height: 100%; 
+			html, body{
+				height: 100%;
 			}
-			
+
 			body{
 				background: #ffff;
-				display: flex; 
-				align-items: left; 
+				display: flex;
+				align-items: left;
 			}
 
 			textarea, #id_password, #id_button{
@@ -129,18 +129,18 @@
 				box-sizing: padding-box;
 				overflow: hidden;
 				padding: 5px;
-				height: 33px;
+				height: auto;
 				width: 500px;
 				font-size: 14px;
 				margin: 10px auto;
 				border: 1px solid rgba(0,0,0,.15);
 				border-radius: .25rem;
 			}
-			
-			textarea[name=analysis], textarea[name=passage] {   
+
+			textarea[name=analysis], textarea[name=passage] {
 				height: 200px;
-			}  
-			
+			}
+
 			#id_button {
 				transition-duration: 0.4s;
 				background-color: white;
@@ -152,15 +152,13 @@
 				color: white;
 			}
 		</style>
-		
+
 
 		<!-- Provide a button to click to submit the form. -->
 		<input type="submit" name="submit" value="Submit" id="id_button" />
 	</form>
-	
+
 	<div style="padding-top:30px;">
-		<h2 style="text-align:center"><a href="{% url 'show_article' article.slug %}">Finish and Submit</a></h1>
+		<h2 style="text-align:center"><a href="{% url 'show_article' article.slug %}">Finish and Submit</a></h2>
 	</div>
 {% endblock %}
-
-

@@ -33,11 +33,13 @@ class ArticleForm(forms.ModelForm):
         ('Philosophy', 'Philosophy')
     ]
 
-    title = forms.CharField(widget=forms.Textarea)
-    book = forms.CharField(widget=forms.Textarea)
-    book_author = forms.CharField(widget=forms.Textarea, required=False)
-    book_published = forms.CharField(widget=forms.Textarea, required=False)
-    analysis = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(widget=forms.Textarea({"class": "autoExpand", "data-min-rows": "1", "rows": "1"}))
+    book = forms.CharField(widget=forms.Textarea({"class": "autoExpand", "data-min-rows": "1", "rows": "1"}))
+    book_author = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})),
+                                  required=False)
+    book_published = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})),
+                                     required=False)
+    analysis = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
     category = forms.CharField(widget=forms.Select(choices=categories))
 
     class Meta:
@@ -46,7 +48,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    user_comment = forms.CharField(widget=forms.Textarea)
+    user_comment = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
     rating = forms.DecimalField(min_value=0, max_value=5, max_digits=2, decimal_places=1)
     
     class Meta:
@@ -55,10 +57,10 @@ class CommentForm(forms.ModelForm):
 
 
 class SnippetForm(forms.ModelForm):
-   snippet_title = forms.CharField(widget=forms.Textarea)
-   page = forms.CharField(widget=forms.Textarea)
-   passage = forms.CharField(widget=forms.Textarea)
-   analysis = forms.CharField(widget=forms.Textarea)
+   snippet_title = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
+   page = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
+   passage = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
+   analysis = forms.CharField(widget=forms.Textarea(({"class": "autoExpand", "data-min-rows": "1", "rows": "1"})))
 
    class Meta:
        model = Snippet
