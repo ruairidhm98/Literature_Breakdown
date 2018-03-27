@@ -40,10 +40,19 @@ class SearchMethondTest(TestCase):
         self.assertContains(response,'querytest')
         self.assertContains(response, 'querytitle')
 
-    def test_ensure_search_returns_true_if_query_matches_know_article(self):
+    def test_ensure_search_returns_true_if_query_matches_known_article(self):
         """
-         
+         test_ensure_search_returns_true_if_query_matches_known_article should only retun true
+         if we attempt to search for an article that we know exists and it is present in results
         """
+
+        user_prof = create_user_prof(username='queryart')
+
+        add_art(title='test article query',author=user_prof)
+
+        response = self.client.post(reverse('search'), data={'query': "test"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,'test article query')
 
 class ArticleMethodTest(TestCase):
     def test_ensure_view_are_positive(self):
