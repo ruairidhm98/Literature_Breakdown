@@ -47,6 +47,8 @@ class Article(models.Model):
         super(Article, self).save(*args, **kwargs)
         if self.views < 0 :
             self.views = self.views * -1
+        if self.rating < 0:
+            self.rating = 0
 
     def __str__(self):
         return self.title

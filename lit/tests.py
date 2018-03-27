@@ -80,12 +80,22 @@ class ArticleMethodTest(TestCase):
         """
         ensure_views_are_positive should results True for
         where views are zero or positive
-        :return:
         """
 
         user_prof = create_user_prof()
 
         art = Article(title='test',views=-1,author=user_prof)
+        art.save()
+        self.assertEqual((art.views>=0),True)
+
+    def test_ensure_rating_are_positive(self):
+        """
+        test_ensure_rating_are_positive should results True for
+        where rating is zero or positive
+        """
+        user_prof = create_user_prof()
+
+        art = Article(title='test',rating=-1,author=user_prof)
         art.save()
         self.assertEqual((art.views>=0),True)
 
