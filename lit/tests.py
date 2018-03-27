@@ -13,16 +13,38 @@ def create_user_prof(username='test',password='test',name='test'):
 
     return user_prof
 
-def add_art(title='test',views=1,author='test_admin',book='test',date='01/03/18',rating=4):
-    c = Article.objects.get_or_create(author=author)[0]
-    c.views = views
-    c.title = title
-    c.book = book
-    c.date = date
-    c.rating =rating
-    c.save()
+def add_art(title='test',views=1,author='test_admin',book='test',date='01/03/18',rating=0):
+    a = Article.objects.get_or_create(title=title,author=author)[0]
+    a.views = views
+    a.book = book
+    a.date = date
+    a.rating = rating
+    a.save()
 
-    return c
+    return a
+
+class TrendingArticleTest(TestCase):
+    def test_ensure_top_trending_articles_appear(self):
+        """
+         test_ensure_top_trending_articles_appear should return positive if trending articles are there
+        """
+
+        user_prof = create_user_prof(username="trending")
+
+        add_art(title='trend1', author=user_prof, rating=5)
+        add_art(title='trend2', author=user_prof, rating=4)
+        add_art(title='trend3', author=user_prof, rating=3)
+        add_art(title='trend4', author=user_prof, rating=2)
+        add_art(title='trend5', author=user_prof, rating=1)
+
+        response = self.client.get(reverse('trending'))
+        self.assertEquals(response.status_code,200)
+        self.assertContains(response, 'trend1')
+        self.assertContains(response, 'trend2')
+        self.assertContains(response, 'trend3')
+        self.assertContains(response, 'trend4')
+        self.assertContains(response, 'trend5')
+
 
 class SearchMethondTest(TestCase):
     def test_ensure_search_with_no_query_posts_all_possible_results(self):
