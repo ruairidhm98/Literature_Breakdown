@@ -125,11 +125,13 @@
 				<h4 style="text-align:center">From: {{ comment.user }}</h4>
 				<h4 style="text-align:center; padding-top:10px;">Rating: {{ comment.rating }}</h4>
 				{% if userprofile == comment.user %}
-				<h4 style="text-align:center; padding-top:10px;"><a href="{% url 'remove_comment' comment.id article.slug %}">Delete</a></h4>
+				<span onclick="return confirm('Are you sure?')">
+					<h4 style="text-align:center; padding-top:10px;"><a href="{% url 'remove_comment' comment.id article.slug %}">Delete</a></h4>
+				</span>
 				{% endif %}
 			</div>
-			<div class="col-md-9">
-				<p>{{ comment.user_comment }}</p>
+			<div class="col-md-8">
+				<p style="text-align:left;">{{ comment.user_comment }}</p>
 			</div>
 		</div>
 		{% endfor %}

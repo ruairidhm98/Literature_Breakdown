@@ -16,13 +16,13 @@
 {% block body_block %}
 	<h1 class="display-3">Login to Literature Breakdown</h1>
 	{% if error_message %}
-		<strong>{{ error_message }}</strong>
+		<strong style="text-align: center;">{{ error_message }}</strong>
 	{% endif %}
 	<form id="login_form" method="post" action="{% url 'login' %}">
 		{% csrf_token %}
-		<p style="text-align: center">Username</p><input type="text" name="username" value="" size="50" id="userfield" />
+		<p style="text-align: center;">Username</p><input type="text" name="username" value="" size="50" id="userfield" />
 		<br />
-		<pl style="text-align: center">Password</pl><input type="password" name="password" value="" size="50" id="passfield" />
+		<p style="text-align: center;">Password</p><input type="password" name="password" value="" size="50" id="passfield" />
 		<br />
 		<input type="submit" value="Submit" id="id_button" />
 	</form>
