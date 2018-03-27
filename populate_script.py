@@ -502,7 +502,7 @@ def populate():
     # adds snippets to the database
     add_snippet(articles_lst[5], snippets[0]["snippet_title"], snippets[0]["page"], snippets[0]["passage"],
                 snippets[0]["analysis"])
-    add_snippet(articles_lst[3], snippets[1]["snippet_title"], snippets[1]["page"], snippets[1]["passage"],
+    add_snippet(articles_lst[4], snippets[1]["snippet_title"], snippets[1]["page"], snippets[1]["passage"],
                 snippets[1]["analysis"])
     add_snippet(articles_lst[8], snippets[2]["snippet_title"], snippets[2]["page"], snippets[2]["passage"],
                 snippets[2]["analysis"])
