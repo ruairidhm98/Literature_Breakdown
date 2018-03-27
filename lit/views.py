@@ -13,10 +13,12 @@ from datetime import datetime
 ###################### FRONTPAGE VIEWS ######################
 
 def index(request):
+    # Get 5 trending and new articles to display, as well as the categories
     article_list_trending = Article.objects.order_by('-rating')[:5]
     article_list_new = Article.objects.order_by('-date_published')[:5]
     category_list = Category.objects.all()
-    
+
+    # Fill the context dictionary and render the page
     context_dict = {'articles_new': article_list_new,
                     'articles_trending' : article_list_trending,
                     'categories': category_list}
@@ -24,22 +26,14 @@ def index(request):
 
 
 def search(request):
-    result_list_articles = [] #list of articles found by search
-    result_list_users = [] #list of users found by search
-    article_rating_ascending = [] #list of articles sorted ascending by rating
-    article_rating_descending = [] #list of articles sorted descending by rating
-    article_date_ascending = [] #list of articles sorted ascending by date published
-    article_date_descending = [] #list of articles sorted descending by date published
-    article_views_ascending = [] #list of articles sorted ascending by views
-    articles_views_descending = [] #list of articles sorted descending by views
-    user_age_ascending = [] #list of users sorted ascending by age
-    user_age_descending = [] #list of users sorted descending by age
-    user_num_articles_ascending = [] #list of users sorted ascending by number of articles made
-    user_num_articles_descending = [] #list of users sorted descending by number of articles made
-    context_dict = {}
+    result_list_articles = [] # List of articles found by search
+    result_list_users = [] # List of users found by search
 
+    # Process the search query
     if request.method == 'POST':
         query = request.POST['query'].strip()
+        # If we have a valid query, get the articles and users that have a string in common
+        # with the query to return
         if query:
             articles = Article.objects.filter()
             for article in articles:
@@ -50,51 +44,31 @@ def search(request):
                 if query.upper() in user.name.upper() or query.upper() in user.user.username.upper():
                     result_list_users += [user]
 
-
+        # If the query is an empty string return all the articles and users
         if query == "":
             result_list_articles = Article.objects.filter()
             result_list_users = UserProfile.objects.filter()
-
+    
+    # Sort the article and user list to display
     result_list_articles = sorted(result_list_articles,  key = lambda article: article.title.upper())
     result_list_users = sorted(result_list_users, key = lambda user: user.name.upper())
 
-    #different sortings of articles
-    #ascending first
-    article_rating_ascending = sorted(result_list_articles, key = lambda article: article.rating)
-    article_date_ascending = sorted(result_list_articles,key=lambda article: article.date_published)
-    article_views_ascending = sorted(result_list_articles,key=lambda article: article.views)
-    user_age_ascending = sorted(result_list_users,key=lambda user: user.age)
-    user_num_articles_ascending = sorted(result_list_users,key=lambda user: user.num_articles)
-    #descending next
-    article_rating_descending = sorted(result_list_articles, key = lambda article: article.rating,reverse=True)
-    article_date_descending = sorted(result_list_articles,key=lambda article: article.date_published,reverse=True)
-    articles_views_descending = sorted(result_list_articles,key=lambda article: article.views,reverse=True)
-    user_age_descending = sorted(result_list_users,key=lambda user: user.age,reverse=True)
-    user_num_articles_descending = sorted(result_list_users,key=lambda user: user.num_articles,reverse=True)
-
+    # Fill the context dictionary and render the page
     context_dict = {'result_list_articles': result_list_articles,
                     'result_list_users': result_list_users,
-                    'query': query,
-                    'article_rating_ascending' : article_rating_ascending,
-                    'article_date_ascending' : article_date_ascending,
-                    'article_views_ascending' : article_views_ascending,
-                    'article_rating_descending' : article_rating_descending,
-                    'article_date_descending' : article_date_descending,
-                    'articles_views_descending' : articles_views_descending,
-                    'user_age_ascending': user_age_ascending,
-                    'user_num_articles_ascending' : user_num_articles_ascending,
-                    'user_age_descending' : user_age_descending,
-                    'user_num_articles_descending' : user_num_articles_descending}
-
+                    'query': query}
     return render(request, 'lit/search.html', context_dict)
 
 def faq(request):
+    # Get the list of categories, fill the context dictionary and render the page
     category_list = Category.objects.all()
     context_dict = {'categories': category_list}
     return render(request, 'lit/faq.html', context_dict)
 
 
 def new_articles(request):
+    # Get the list of new articles, categories, and the current date, then fill the context dictionary
+    # and render the page
     article_list_new = Article.objects.order_by('date_published')[:5]
     category_list = Category.objects.all()
     date_today = datetime.now().strftime("%d/%m/%Y")
@@ -105,6 +79,8 @@ def new_articles(request):
 
 
 def trending_articles(request):
+    # Get the list of trending articles, categories, and the current date, then fill the context dictionary
+    # and render the page
     article_list_trending = Article.objects.order_by('-rating')[:5]
     category_list = Category.objects.all()
     date_today = datetime.now().strftime("%d/%m/%Y")
@@ -120,19 +96,18 @@ def show_category(request, category_name_slug):
 
     try:
         # Can we find a category name slug with the given name?
-        # If we can't, the .get() method rasises a DoesNotExist exception.
+        # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises and exception.
         category = Category.objects.get(slug=category_name_slug)
 
-        # Retrieve all of the associated pages.
-        # Note that filter() will return a list of page objects or an empty list
+        # Retrieve all of the associated articles.
+        # Note that filter() will return a list of article objects or an empty list
         articles = Article.objects.filter(category=category)
 
-        # Adds our results list to the template context under name pages.
+        # Adds our results list to the template context under name articles.
         context_dict['articles'] = articles
 
-        # We also add the category object from
-        # the database to the context dictionary.
+        # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify if we are looking at the same category
         context_dict['category'] = category
 
@@ -141,8 +116,7 @@ def show_category(request, category_name_slug):
         context_dict['categories'] = category_list
     except Category.DoesNotExist:
         # We get here if we didn't find the specified category.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
+        # Don't do anything - the template will display the "no category" message for us.
         context_dict['articles'] = None
         context_dict['category'] = None
         context_dict['categories'] = None
@@ -157,14 +131,11 @@ def show_category(request, category_name_slug):
 def register(request):
     # A boolean value for telling the template
     # whether the registration was successful.
-    # Set to False initially. Code changes value to
-    # True when registration succeeds.
     registered = False
 
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
@@ -174,14 +145,12 @@ def register(request):
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
 
             # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves,
-            # we set commit=False. This delays saving the model
-            # until we're read to avoid integrity problems.
+            # we set commit=False. 
             profile = profile_form.save(commit=False)
             profile.user = user
 
@@ -221,11 +190,6 @@ def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
-        # We use request.POST.get('<variable>') as opposed
-        # to request.POST['<variable>'], because the
-        # request.POST.get('<variable>') returns None if the
-        # value does not exist, while request.POST['<variable>']
         # will raise a KeyError exception.
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -235,8 +199,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
+        # If None, no user with matching credentials was found.
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
@@ -259,10 +222,8 @@ def user_login(request):
             #return HttpResponse("Invalid login details supplied.")
 
     # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
     else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
+        # No context variables to pass to the template system
         return render(request, 'lit/login.html', {})
 
 # Use the login_required() decorator to ensure only those logged in can
@@ -281,13 +242,15 @@ def user_logout(request):
 ###################### PROFILE VIEWS ######################
 
 def profile(request, username):
-    context_dict = {}
-
+    # Check if the user exists before rendering their profile
     try:
         user = User.objects.get(username=username)
-    except User.DoesNotExist:
+    except (User.DoesNotExist) as error:
+        print(error)
         return redirect('index')
-
+    
+    # Get all the relevant data on the user's profile to pass to the template
+    context_dict = {}
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
     articles = Article.objects.filter(author=userprofile)
     context_dict['userprofile'] = userprofile
@@ -295,19 +258,27 @@ def profile(request, username):
     context_dict['numb_articles'] = len(articles)
     context_dict['selecteduser'] = user
 
-    # If this user already has a favourites object then use it
+    # If this user already has a favourites object then get it
     if Favourites.objects.filter(user=userprofile).exists():
         favourite = Favourites.objects.get(user=userprofile)
         favourites = favourite.fav_list.all()
         context_dict['favourites'] = favourites
 
+    # Render the template depending on the context.
     return render(request, 'lit/profile.html', context_dict)
 
 @login_required
 def edit_profile(request):
-    user = User.objects.get(username=request.user.username)
-    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
+    # Check if the user exists before edithing their profile
+    try:
+        user = User.objects.get(username=username)
+    except (User.DoesNotExist) as error:
+        print(error)
+        return redirect('index')
 
+    # Get all the relevant data on the user's profile as well as the needed forms
+    # to pass to the template
+    userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
     user_form = UserForm(request.POST or None, instance=user)
     profile_form = UserProfileForm(request.POST or None, instance=userprofile)
 
@@ -325,7 +296,6 @@ def edit_profile(request):
         # Since we need to set the user attribute ourselves,
         # we set commit=False. This delays saving the model
         # until we're read to avoid integrity problems.
-
         userprofile = profile_form.save(commit=False)
         userprofile.user = user
 
@@ -356,8 +326,14 @@ def edit_profile(request):
 
 @login_required
 def remove_profile(request):
-    user = User.objects.get(username=request.user.username)
+    # Check if the user exists before deleting their profile
+    try:
+        user = User.objects.get(username=username)
+    except (User.DoesNotExist) as error:
+        print(error)
+        return redirect('index')
 
+    # Delete the user's UserProfile as well as their User object
     if UserProfile.objects.filter(user=user).exists():
         User.objects.filter(username=user.username).delete()
         UserProfile.objects.filter(user=user).delete()
@@ -380,69 +356,58 @@ def show_article(request, article_name_slug):
     # to the template rendering enginge.
     context_dict = {}
 
-    # ARTICLE, COMMENTS, AND SNIPPETS DATA HANDLING
+    # ARTICLE, COMMENTS, AND SNIPPETS DATA HANDLING #
     try:
-        # Can we find a article name slug with the given name?
-        # If we can't, the .get() method rasises a DoesNotExist exception.
-        # So the .get() method returns one model instance or raises and exception.
+        # Get all the relevant data on the article to pass to the template
         article = Article.objects.get(slug=article_name_slug)
         comments = Comment.objects.filter(article=article)
         snippets = Snippet.objects.filter(title=article)
-
-        # We also add the article object from
-        # the database to the context dictionary.
-        # We'll use this in the template to verify that the article exists.
         context_dict['article'] = article
         context_dict['comments'] = comments
         context_dict['snippets'] = snippets
     except Article.DoesNotExist:
-        # We get here if we didn't find the specified article.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
+        # If we can't find the specified article then return nothing
         context_dict['article'] = None
         context_dict['comments'] = None
         context_dict['snippets'] = None
 
     context_dict['favourited'] = False
     if logged_in == True:
-        # FAVOURITE HANDLING
+        # FAVOURITE HANDLING #
         # Test whether this user already has a Favourites object
         userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
         if Favourites.objects.filter(user=userprofile).exists():
+            # If so then test whether this user has favourited the article
             favouriteObject = Favourites.objects.get(user=userprofile)
             favourites = favouriteObject.fav_list.all()
-            # Test whether this use has favourited this article
             if article in favourites:
                 context_dict['favourited'] = True
 
-        # COMMENT FORM HANDLING
+        # COMMENT FORM HANDLING #
         # Check if the user has already commented on this article
         can_comment = True
         if (Comment.objects.filter(article=article, user=userprofile).exists()) or (article.author==userprofile):
+            # If so then set can_comment to False so they can't comment a second time
             can_comment = False
         context_dict['can_comment'] = can_comment
         
         # If it's a HTTP POST, we're interested in processing form data.
         if request.method == 'POST':
-            # Attempt to grab information from the raw form information.
-            # Note that we make use of both ArticleForm.
+            # Get the comment data from the comment form
             comment_form = CommentForm(data=request.POST)
 
             # If the form is valid...
             if comment_form.is_valid():
-                # Since we need to set the img attribute ourselves,
-                # we set commit=False. This delays saving the model
-                # until we're read to avoid integrity problems.
+                # Since we need to set the user and article attributes
+                # ourselves, we set commit=False.
                 comment = comment_form.save(commit=False)
             
-                # Set the comment's writer and article
+                # Set the comment's writer and article and save it
                 comment.user = userprofile
                 comment.article = article
-
-                # Now we save the Comment model instance.
                 comment.save()
 
-                # Update article average rating
+                # Update the article's average rating
                 comments = Comment.objects.filter(article=article)
                 rating_count = 0
                 rating = 0
@@ -454,10 +419,10 @@ def show_article(request, article_name_slug):
                 article.rating = rating
                 article.save()
             else:
-                # Invalid form - mistakes or something else?
-                # Print problems to the terminal.
+                # If the form is invalid, print the error to the terminal
                 print(comment_form.errors)
 
+            # Reload the comment form in case it needs to be displayed again
             comment_form = CommentForm()
         else:
             # Not a HTTP POST, so we render our form.
@@ -466,11 +431,13 @@ def show_article(request, article_name_slug):
             
         context_dict['userprofile'] = userprofile
         context_dict['comment_form'] = comment_form
-        
+
+    # Render the template depending on the context.
     return render(request, 'lit/article.html', context_dict)
 
 @login_required
 def add_article(request, username):
+    # Check if the user exists before adding an article
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -478,49 +445,41 @@ def add_article(request, username):
     
     # A boolean value for telling the template
     # whether the registration was successful.
-    # Set to False initially. Code changes value to
-    # True when registration succeeds.
     registered = False
     
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
-        # Attempt to grab information from the raw form information.
-        # Note that we make use of both ArticleForm.
+        # Get the article data from the article form
         article_form = ArticleForm(data=request.POST)
 
         # If the form is valid...
         if article_form.is_valid():
             # Since we need to set the img attribute ourselves,
-            # we set commit=False. This delays saving the model
-            # until we're read to avoid integrity problems.
+            # we set commit=False
             article = article_form.save(commit=False)
 
             # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and
-            # put it in the UserProfile model.
+            # If so, put it in the article model.
             if 'img' in request.FILES:
                 article.img = request.FILES['img']
 
-            # Set the article's writer
+            # Set the article's writer, author, and date published, then save it
             userprofile = UserProfile.objects.get_or_create(user=user)[0]
             article.author = userprofile
-
             article.date_published = datetime.now().strftime("%d/%m/%y")
-            # Now we save the Article model instance.
             article.save()
 
             # Update our variable to indicate that the template
             # registration was successful.
             registered = True
-            
+
+            # Proceed to the add snippet page
             return redirect('add_snippet', username=username, article_name_slug=article.slug)
         else:
-            # Invalid form - mistakes or something else?
-            # Print problems to the terminal.
+            # If the form is invalid, print the error to the terminal
             print(article_form.errors)
     else:
-        # Not a HTTP POST, so we render our form using two ModelForm instances.
-        # These forms will be blank, ready for user input.
+        # Not a HTTP POST, so we render the empty article form
         article_form = ArticleForm()
 
     # Render the template depending on the context.
@@ -531,49 +490,42 @@ def add_article(request, username):
 
 @login_required
 def edit_article(request, username, article_name_slug):
-    # Check that user and article exist
+    # Check that user and article exist before editing
     try:
         user = User.objects.get(username=request.user.username)
         article = Article.objects.get(slug=article_name_slug)
     except (User.DoesNotExist, Article.DoesNotExist) as error:
         print(error)
-        return redirect('article')
-    
+        return redirect('index')
+
+    # Create the article form and fill it with preexisting article data
     article = get_object_or_404(Article, slug=article_name_slug)
     article_form = ArticleForm(request.POST or None, instance=article)
-    
+
+    # If the user put something in the form
     if article_form.is_valid():
-        #userprofile = UserProfile.objects.get_or_create(user=user)[0]
-        #if Article.objects.filter(author=userprofile).exists():
-        #    Article.objects.filter(title=article.title).delete()
         # Since we need to set the img attribute ourselves,
-        # we set commit=False. This delays saving the model
-        # until we're read to avoid integrity problems.
+        # we set commit=False.
         article = article_form.save(commit=False)
 
         # Did the user provide a profile picture?
-        # If so, we need to get it from the input form and
-        # put it in the UserProfile model.
+        # If so, put it in the article model.
         if 'img' in request.FILES:
                 article.img = request.FILES['img']
 
-        # Set the article's writer
+        # Set the article's writer and save it
         userprofile = UserProfile.objects.get_or_create(user=user)[0]
         article.author = userprofile
-
-        # Now we save the Article model instance.
         article.save()
-        # Now we save the Article model instance.
-        #article.save(update_fields=['book', 'title', 'analysis', 'category', 'img', 'book_author', 'book_published'])
-
+        
         # Update our variable to indicate that the template
         # registration was successful.
         registered = True
-            
+
+        # Proceed to the add snippet page
         return redirect('add_snippet', username=username, article_name_slug=article.slug)
     else:
-        # Invalid form - mistakes or something else?
-        # Print problems to the terminal.
+        # If the form is invalid, print the error to the terminal
         print(article_form.errors)
 
     # Render the template depending on the context.
@@ -584,18 +536,20 @@ def edit_article(request, username, article_name_slug):
                 
 @login_required
 def remove_article(request, username, article_name_slug):
-    # Check that user and article exist
+    # Check that user and article exist before removing the article
     try:
         user = User.objects.get(username=request.user.username)
         article = Article.objects.get(slug=article_name_slug)
     except (User.DoesNotExist, Article.DoesNotExist) as error:
         print(error)
-        return redirect('article')
+        return redirect('index')
 
+    # Find the article in the DB and delete it
     userprofile = UserProfile.objects.get_or_create(user=request.user)[0]
     if Article.objects.filter(author=userprofile).exists():
         Article.objects.filter(title=article.title).delete()
 
+    # Return to the user's profile
     return redirect('profile', username=username)
 
 
@@ -605,13 +559,13 @@ def remove_article(request, username, article_name_slug):
 
 @login_required
 def add_favourite(request, username, article_name_slug):
-    # Check that user and article exist
+    # Check that user and article exist before adding a favourite
     try:
         user = User.objects.get(username=username)
         article = Article.objects.get(slug=article_name_slug)
     except (User.DoesNotExist, Article.DoesNotExist) as error:
         print(error)
-        return redirect('article')
+        return redirect('index')
 
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
 
@@ -630,11 +584,12 @@ def add_favourite(request, username, article_name_slug):
         favourite.fav_list.add(article)
         favourite.save()   
 
+    # Return to the article page
     return redirect('show_article', article_name_slug=article_name_slug)
 
 @login_required
 def remove_favourite(request, username, article_name_slug):
-    # Check that user and article exist
+    # Check that user and article exist before removing the favourite
     try:
         user = User.objects.get(username=username)
         article = Article.objects.get(slug=article_name_slug)
@@ -653,6 +608,7 @@ def remove_favourite(request, username, article_name_slug):
             favourite.fav_list.remove(article)
             favourite.save()
 
+    # Return to the article page
     return redirect('show_article', article_name_slug=article_name_slug)
 
 
@@ -662,7 +618,7 @@ def remove_favourite(request, username, article_name_slug):
 
 @login_required
 def remove_comment(request, id, article_name_slug):
-    # Check that user, article, and comment exist
+    # Check that user, article, and comment exist before removing the comment
     try:
         user = User.objects.get(username=request.user.username)
         article = Article.objects.get(slug=article_name_slug)
@@ -688,10 +644,8 @@ def remove_comment(request, id, article_name_slug):
             round(rating,1)
             article.rating = rating
             article.save()
-    else:
-        article.rating = 0
-        article.save()
 
+    # Go back to the article page
     return redirect('show_article', article_name_slug=article_name_slug)
 
 
@@ -702,39 +656,30 @@ def remove_comment(request, id, article_name_slug):
 
 @login_required
 def add_snippet(request, username, article_name_slug):
+    # Check that user exists before adding a snippet
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         return redirect('index')
 
-    # Create a context dictionary in which we can pass
-    # to the template rendering enginge.
     context_dict = {}
 
-    # ARTICLE, COMMENTS, AND SNIPPETS DATA HANDLING
     try:
-        # Can we find a article name slug with the given name?
-        # If we can't, the .get() method rasises a DoesNotExist exception.
-        # So the .get() method returns one model instance or raises and exception.
+        # Check that the article exists and get it along with preexisting snippets
         article = Article.objects.get(slug=article_name_slug)
         snippets = Snippet.objects.filter(title=article)
 
-        # We also add the article object from
-        # the database to the context dictionary.
-        # We'll use this in the template to verify that the article exists.
+        # Get all the relevant data on the article and snippets to pass to the template
         context_dict['article'] = article
         context_dict['snippets'] = snippets
     except Article.DoesNotExist:
-        # We get here if we didn't find the specified article.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
+        # If the article doesn't exist the return nothing
         context_dict['article'] = None
         context_dict['snippets'] = None
     
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both ArticleForm.
         snippet_form = SnippetForm(data=request.POST)
 
         # If the form is valid...
@@ -747,47 +692,49 @@ def add_snippet(request, username, article_name_slug):
             # Reload the snippet form
             snippet_form = SnippetForm()
         else:
-            # Invalid form - mistakes or something else?
-            # Print problems to the terminal.
+            # If the form is invalid, print the error to the terminal
             print(snippet_form.errors)
     else:
-        # Not a HTTP POST, so we render our form using the ModelForm instance.
-        # These forms will be blank, ready for user input.
+        # Not a HTTP POST, so we render our form
         snippet_form = SnippetForm()
         
     context_dict['snippet_form'] = snippet_form
-    
+
+    # Render the template depending on the context.
     return render(request, 'lit/add_snippet.html', context_dict)
 
 @login_required
 def edit_snippet(request, article_name_slug, snippet_id):
-    # Check that article and snippet exist
+    # Check that article and snippet exist before editing it
     try:
         article = Article.objects.get(slug=article_name_slug)
         snippet = Snippet.objects.get(id=snippet_id)
     except (Article.DoesNotExist, Snippet.DoesNotExist) as error:
         print(error)
-        return redirect('article')
+        return redirect('index')
 
+    # Create the snippet form and fill it with preexisting snippet data
     context_dict = {}
     snippet = get_object_or_404(Snippet, id=snippet_id)
     snippet_form = SnippetForm(request.POST or None, instance=snippet)
 
+    # If what the user inserted in the form is correct
     if snippet_form.is_valid():
         # Delete the pre-existing snippet
-        
         Snippet.objects.filter(id=snippet_id).delete()
+        
         # Get and save the new Snippet
         snippet = snippet_form.save(commit=False)
         snippet.title = article
         snippet.save()
-        
+
+        # Return to the article page
         return redirect('show_article', article_name_slug=article.slug)
     else:
-        # Invalid form - mistakes or something else?
-        # Print problems to the terminal.
+        # If the form is invalid print its errors to the terminal
         print(snippet_form.errors)
 
+    # Pass the article and snippet data, and the form to the context_dictionary
     context_dict['article'] = article
     context_dict['snippet'] = snippet
     context_dict['snippet_form'] = snippet_form
@@ -797,16 +744,18 @@ def edit_snippet(request, article_name_slug, snippet_id):
 
 @login_required
 def remove_snippet(request, article_name_slug, snippet_id):
-    # Check that article and snippet exist
+    # Check that article and snippet exist before deleting it
     try:
         article = Article.objects.get(slug=article_name_slug)
         snippet = Snippet.objects.get(id=snippet_id)
     except (Article.DoesNotExist, Snippet.DoesNotExist) as error:
         print(error)
-        return redirect('article')
+        return redirect('index')
 
+    # If the snippet exists then delete it
     if Snippet.objects.filter(id=snippet_id).exists():
         Snippet.objects.filter(id=snippet_id).delete()
 
+    # Return to the article page
     return redirect('show_article', article_name_slug=article_name_slug)
 
