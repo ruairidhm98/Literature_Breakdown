@@ -13,7 +13,7 @@ textarea, #userfield, #passfield, #id_password, #id_button, #id_age, #id_rating{
 	box-sizing: padding-box;
 	overflow: hidden;
 	padding: 5px;
-	height: auto;
+	height: 33px;
 	width: 500px;
 	font-size: 14px;
 	margin: 10px auto;
@@ -21,9 +21,11 @@ textarea, #userfield, #passfield, #id_password, #id_button, #id_age, #id_rating{
 	border-radius: .25rem;
 }
 
-textarea[name=analysis], textarea[name=passage] {   
-	height: 200px;
-} 
+textarea[name=analysis], textarea[name=passage], textarea[name=title], textarea[name=book],
+textarea[name=id_user_comment] {
+	height: auto;
+}
+
 
 #id_picture{
 	border: 0;
@@ -41,5 +43,5 @@ textarea[name=analysis], textarea[name=passage] {
 }
 
 #id_user_comment{
-	height: 200px;
+	height: auto;
 }
