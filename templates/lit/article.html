@@ -104,19 +104,11 @@
 			<div class="row">
 				<div class="col-md-6">
 					<h4 style="text-align:center;padding-top:10px;">Passage</h4>
-					<p style="position: relative;
-							  float: left;
-							  top: 50%;
-							  left: 51%;
-							  transform: translate(-50%, -50%);">{{ snippet.passage }}</p>
+					<p style="text-align:center;">{{ snippet.passage }}</p>
 				</div>
 				<div class="col-md-6">
 					<h4 style="text-align:center;padding-top:10px;">Analysis</h4>
-					<p style="position: relative;
-							  float: left;
-							  top: 50%;
-							  left: 50%;
-							  transform: translate(-50%, -50%);">{{ snippet.analysis }}</p>
+					<p style="text-align:center;">{{ snippet.analysis }}</p>
 				</div>
 			</div>
 		</div>
@@ -137,10 +129,7 @@
 				{% endif %}
 			</div>
 			<div class="col-md-9">
-				<p style="position: relative;
-						  float: left;
-						  top: 50%;
-						  transform: translate(-50%, -50%);">{{ comment.user_comment }}</p>
+				<p>{{ comment.user_comment }}</p>
 			</div>
 		</div>
 		{% endfor %}
