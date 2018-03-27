@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf8a2096-cd85-403f-987a-acef5f273723" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/lit/tests.py" afterPath="$PROJECT_DIR$/lit/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/media/profile_images/it_5EywLHr.jpg" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
+      <change beforePath="$PROJECT_DIR$/lit/models.py" afterPath="$PROJECT_DIR$/lit/models.py" />
+      <change beforePath="$PROJECT_DIR$/lit/views.py" afterPath="$PROJECT_DIR$/lit/views.py" />
+      <change beforePath="$PROJECT_DIR$/templates/lit/add_snippet.html" afterPath="$PROJECT_DIR$/templates/lit/add_snippet.html" />
+      <change beforePath="$PROJECT_DIR$/templates/lit/article.html" afterPath="$PROJECT_DIR$/templates/lit/article.html" />
+      <change beforePath="$PROJECT_DIR$/templates/lit/login.html" afterPath="$PROJECT_DIR$/templates/lit/login.html" />
+      <change beforePath="$PROJECT_DIR$/templates/lit/profile.html" afterPath="$PROJECT_DIR$/templates/lit/profile.html" />
+      <change beforePath="$PROJECT_DIR$/templates/lit/register.html" afterPath="$PROJECT_DIR$/templates/lit/register.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,8 +34,8 @@
       <file leaf-file-name="tests.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lit/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2877">
-              <caret line="140" column="38" lean-forward="true" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
+            <state relative-caret-position="189">
+              <caret line="36" column="59" lean-forward="false" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -38,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/lit/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="798">
-              <caret line="38" column="29" lean-forward="true" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+              <caret line="38" column="29" lean-forward="false" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -645,7 +652,7 @@
     <entry file="file://$PROJECT_DIR$/lit/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="798">
-          <caret line="38" column="29" lean-forward="true" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+          <caret line="38" column="29" lean-forward="false" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -664,8 +671,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lit/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2877">
-          <caret line="140" column="38" lean-forward="true" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
+        <state relative-caret-position="189">
+          <caret line="36" column="59" lean-forward="false" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
           <folding />
         </state>
       </provider>

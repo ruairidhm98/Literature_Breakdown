@@ -270,7 +270,7 @@ def profile(request, username):
 def edit_profile(request):
     # Check if the user exists before edithing their profile
     try:
-        user = User.objects.get(username=username)
+        user = User.objects.get(username=request.user.username)
     except (User.DoesNotExist) as error:
         print(error)
         return redirect('index')
@@ -414,15 +414,12 @@ def show_article(request, article_name_slug):
                     rating += comment.rating
                     rating_count += 1
                 rating = rating/rating_count
-                round(rating,1)
+                rating = round(rating,1)
                 article.rating = rating
                 article.save()
             else:
                 # If the form is invalid, print the error to the terminal
                 print(comment_form.errors)
-
-            # Reload the comment form in case it needs to be displayed again
-            comment_form = CommentForm()
         else:
             # Not a HTTP POST, so we render our form.
             # These forms will be blank, ready for user input.
@@ -640,7 +637,7 @@ def remove_comment(request, id, article_name_slug):
                 rating += comment.rating
                 rating_count += 1
             rating = rating/rating_count
-            round(rating,1)
+            rating = round(rating,1)
             article.rating = rating
             article.save()
 

@@ -27,21 +27,34 @@
 			<div class="row">
 				<div class="col-md-10"><h1 class="display-3">{{ selecteduser.username }}</h1></div>
 			</div>
-			<div class="row" style="padding-top:30px;">
+			<div class="row">
 				<div class="col-md-6"><h4>Email: {{ selecteduser.email }}</h4></div>
-				{% if selecteduser.first_name %}
-				<div class="col-md-6"><h4>Name: {{ selecteduser.first_name }} {{ selecteduser.last_name }}</h4></div>
+				{% if userprofile.website %}
+				<div class="col-md-6"><h4>Website: {{ userprofile.website }}</h4></div>
 				{% endif %}
 			</div>
-			<div class="row" style="padding-top:30px;">
+			<div class="row" style="padding-top:20px;">
 				<div class="col-md-6"><h4>Joined: {{ selecteduser.date_joined }}</h4></div>
 				<div class="col-md-6"><h4>Last Seen: {{ selecteduser.last_login }}</h4></div>
 			</div>
-			<div class="row" style="padding-top:30px;"> 
-				<div class="col-md-12"><h4>Analyses Written: {{ numb_articles }}</h4></div>
-				{% if userprofile.website %}
-				<div class="col-md-4"><h4>Website: {{ userprofile.website }}</h4></div>
+			{% if userprofile.name or userprofile.age or userprofile.gender or userprofile.location %}
+			<div class="row" style="padding-top:20px;"> 
+				{% if userprofile.name %}
+				<div class="col-md-3"><h4>Name: {{ userprofile.name }}</h4></div>
 				{% endif %}
+				{% if userprofile.age %}
+				<div class="col-md-2"><h4>Age: {{ userprofile.age }}</h4></div>
+				{% endif %}
+				{% if userprofile.gender %}
+				<div class="col-md-3"><h4>Gender: {{ userprofile.gender }}</h4></div>
+				{% endif %}
+				{% if userprofile.location %}
+				<div class="col-md-4"><h4>Location: {{ userprofile.location }}</h4></div>
+				{% endif %}
+			</div>
+			{% endif %}
+			<div class="row" style="padding-top:20px;"> 
+				<div class="col-md-3"><h4>Analyses Written: {{ numb_articles }}</h4></div>
 			</div>
 		</div>
 	</div>
