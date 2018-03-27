@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django import forms
 from lit.models import *
 from lit.forms import *
 from datetime import datetime
@@ -328,7 +327,7 @@ def edit_profile(request):
 def remove_profile(request):
     # Check if the user exists before deleting their profile
     try:
-        user = User.objects.get(username=username)
+        user = User.objects.get(username=request.user.username)
     except (User.DoesNotExist) as error:
         print(error)
         return redirect('index')
