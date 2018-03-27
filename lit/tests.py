@@ -40,19 +40,40 @@ class SearchMethondTest(TestCase):
         self.assertContains(response,'querytest')
         self.assertContains(response, 'querytitle')
 
-    def test_ensure_search_returns_true_if_query_matches_known_article(self):
+    def test_ensure_search_returns_true_if_query_matches_known_article_or_user(self):
         """
          test_ensure_search_returns_true_if_query_matches_known_article should only retun true
-         if we attempt to search for an article that we know exists and it is present in results
+         if we attempt to search for an article and user that we know exists and it is present in results
         """
 
-        user_prof = create_user_prof(username='queryart')
+        user_prof = create_user_prof(username='queryfind')
 
         add_art(title='test article query',author=user_prof)
 
         response = self.client.post(reverse('search'), data={'query': "test"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response,'test article query')
+        self.assertContains(response,'queryfind')
+
+    def test_ensure_search_returns_nothing_if_query_searches_for_artilce_or_user_that_is_not_there(self):
+        """
+         test_ensure_search_returns_nothing_if_query_searches_for_artilce_or_user_that_is_not_there
+         should return true for no findings of either a user or article with an incorrect search
+        """
+
+        user_prof = create_user_prof(username='nofindings')
+
+        add_art(title='nofindings',author =user_prof)
+
+        response = self.client.post(reverse('search'), data={'query': "a"})
+        self.assertEqual(response.status_code, 200)
+
+        num_art = len(response.context['result_list_articles'])
+        num_user = len(response.context['result_list_users'])
+
+        self.assertEqual(num_art,0)
+        self.assertEqual(num_user,0)
+
 
 class ArticleMethodTest(TestCase):
     def test_ensure_view_are_positive(self):
