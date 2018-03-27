@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf8a2096-cd85-403f-987a-acef5f273723" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/profile_images/it_5EywLHr.jpg" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change beforePath="$PROJECT_DIR$/lit/models.py" afterPath="$PROJECT_DIR$/lit/models.py" />
+      <change beforePath="$PROJECT_DIR$/lit/tests.py" afterPath="$PROJECT_DIR$/lit/tests.py" />
       <change beforePath="$PROJECT_DIR$/lit/views.py" afterPath="$PROJECT_DIR$/lit/views.py" />
-      <change beforePath="$PROJECT_DIR$/templates/lit/add_snippet.html" afterPath="$PROJECT_DIR$/templates/lit/add_snippet.html" />
-      <change beforePath="$PROJECT_DIR$/templates/lit/article.html" afterPath="$PROJECT_DIR$/templates/lit/article.html" />
-      <change beforePath="$PROJECT_DIR$/templates/lit/login.html" afterPath="$PROJECT_DIR$/templates/lit/login.html" />
-      <change beforePath="$PROJECT_DIR$/templates/lit/profile.html" afterPath="$PROJECT_DIR$/templates/lit/profile.html" />
-      <change beforePath="$PROJECT_DIR$/templates/lit/register.html" afterPath="$PROJECT_DIR$/templates/lit/register.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,8 +17,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lit/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1909">
-              <caret line="143" column="12" lean-forward="false" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
+            <state relative-caret-position="439">
+              <caret line="70" column="50" lean-forward="false" selection-start-line="70" selection-start-column="50" selection-end-line="70" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -34,8 +27,8 @@
       <file leaf-file-name="tests.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lit/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="36" column="59" lean-forward="false" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
+            <state relative-caret-position="624">
+              <caret line="69" column="43" lean-forward="false" selection-start-line="69" selection-start-column="43" selection-end-line="69" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -223,7 +216,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/lit/tests.py</url>
-          <line>123</line>
+          <line>147</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="1" />
@@ -631,24 +624,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/populate_lit.py" />
-    <entry file="file://$PROJECT_DIR$/lit/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lit/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1909">
-          <caret line="143" column="12" lean-forward="false" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lit/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="798">
@@ -669,10 +644,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lit/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lit/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="70" column="50" lean-forward="false" selection-start-line="70" selection-start-column="50" selection-end-line="70" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lit/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="36" column="59" lean-forward="false" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
+        <state relative-caret-position="624">
+          <caret line="69" column="43" lean-forward="false" selection-start-line="69" selection-start-column="43" selection-end-line="69" selection-end-column="43" />
           <folding />
         </state>
       </provider>

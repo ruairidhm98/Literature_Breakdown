@@ -68,7 +68,7 @@ def faq(request):
 def new_articles(request):
     # Get the list of new articles, categories, and the current date, then fill the context dictionary
     # and render the page
-    article_list_new = Article.objects.order_by('date_published')[:5]
+    article_list_new = Article.objects.order_by('-date_published')[:5]
     category_list = Category.objects.all()
     date_today = datetime.now().strftime("%d/%m/%Y")
     context_dict = {'articles_new': article_list_new,

@@ -45,6 +45,30 @@ class TrendingArticleTest(TestCase):
         self.assertContains(response, 'trend4')
         self.assertContains(response, 'trend5')
 
+class NewArticleTest(TestCase):
+    def test_ensure_newest_articles_displayed(self):
+        """
+        test_ensure_newest_articles_displayed should return new if trending articles are there
+        """
+
+        user_prof = create_user_prof(username="new")
+
+        add_art(title='new1', author=user_prof, date='09/03/2018')
+        add_art(title='new2', author=user_prof, date='08/03/2018')
+        add_art(title='new3', author=user_prof, date='07/03/2018')
+        add_art(title='new4', author=user_prof, date='06/03/2018')
+        add_art(title='new5', author=user_prof, date='05/03/2018')
+        add_art(title='new6', author=user_prof, date='04/03/2018')
+        add_art(title='new7', author=user_prof, date='03/03/2018')
+
+        response = self.client.get(reverse('new'))
+        self.assertEquals(response.status_code,200)
+        self.assertContains(response, 'new1')
+        self.assertContains(response, 'new2')
+        self.assertContains(response, 'new3')
+        self.assertContains(response, 'new4')
+        self.assertContains(response, 'new5')
+
 
 class SearchMethondTest(TestCase):
     def test_ensure_search_with_no_query_posts_all_possible_results(self):
