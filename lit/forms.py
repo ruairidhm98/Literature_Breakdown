@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     website = forms.CharField(widget=forms.Textarea, required=False)
     name = forms.CharField(widget=forms.Textarea, required=False)
-    age = forms.IntegerField(min_value=1, max_value=120, required=False)
+    age = forms.IntegerField(min_value=1, max_value=120, required=True)
     gender = forms.CharField(widget=forms.Textarea, required=False)
     location = forms.CharField(widget=forms.Textarea, required=False)
     class Meta:
