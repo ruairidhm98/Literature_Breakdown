@@ -1,5 +1,5 @@
 from django.test import TestCase
-from lit.models import Article,UserProfile
+from lit.models import Article,UserProfile,Category
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 # Create your tests here.
@@ -13,8 +13,8 @@ def create_user_prof(username='test',password='test',name='test'):
 
     return user_prof
 
-def add_art(title='test',views=1,author='test_admin',book='test',date='01/03/18',rating=0):
-    a = Article.objects.get_or_create(title=title,author=author)[0]
+def add_art(title='test',views=1,author='test_admin',book='test',date='01/03/18',rating=0,category = 'Fiction'):
+    a = Article.objects.get_or_create(title=title,author=author,category=category)[0]
     a.views = views
     a.book = book
     a.date = date
@@ -22,6 +22,81 @@ def add_art(title='test',views=1,author='test_admin',book='test',date='01/03/18'
     a.save()
 
     return a
+
+def add_cat(name,slug):
+    c = Category.objects.get_or_create(name=name)[0]
+    c.slug = slug
+    c.save()
+
+    return c
+
+class CategoriesTest(TestCase):
+    def test_ensure_fiction_category_is_displayed_for_fiction(self):
+        """
+         test_ensure_fiction_category_is_displayed should only return true if article of category
+         fiction is in response
+        """
+
+        add_cat('Fiction','fiction')
+
+
+        user_prof = create_user_prof(username='Fiction')
+
+        add_art(title='Fiction',author=user_prof,category='Fiction')
+
+
+        response = self.client.get(reverse('show_category',kwargs={'category_name_slug' : 'fiction'}))
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response,'Fiction')
+
+    def test_ensure_fiction_category_is_displayed_for_short_story(self):
+        """
+         test_ensure_fiction_category_is_displayed should only return true if article of category
+         short story is in response
+        """
+
+        add_cat('Short Story','short-story')
+
+
+        user_prof = create_user_prof(username='Short')
+
+        add_art(title='Short Story',author = user_prof,category='Short Story')
+
+        response = self.client.get(reverse('show_category',kwargs={'category_name_slug' : 'short-story'}))
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response,'Short Story')
+
+    def test_ensure_fiction_category_is_displayed_for_scripture(self):
+        """
+         test_ensure_fiction_category_is_displayed should only return true if article of category
+         scripture is in response
+        """
+
+        add_cat('Scripture','scripture')
+
+        user_prof = create_user_prof(username='Scrip')
+
+        add_art(title='Scripture',author = user_prof,category='Scripture')
+
+        response = self.client.get(reverse('show_category',kwargs={'category_name_slug' : 'scripture'}))
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response, 'Scripture')
+
+    def test_ensure_fiction_category_is_displayed_for_philosophy(self):
+        """
+         test_ensure_fiction_category_is_displayed should only return true if article of category
+         philosophy is in response
+        """
+
+        add_cat('Philosophy','philosophy')
+
+        user_prof = create_user_prof(username='Phil')
+
+        add_art(title='Philosophy',author= user_prof, category = 'Philosophy')
+
+        response = self.client.get(reverse('show_category',kwargs={'category_name_slug' : 'philosophy'}))
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response, 'Philosophy')
 
 class TrendingArticleTest(TestCase):
     def test_ensure_top_trending_articles_appear(self):
