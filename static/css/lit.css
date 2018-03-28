@@ -1,0 +1,50 @@
+html, body{ 
+	height: 100%; 
+}
+			
+body{
+	background: #ffff;
+	display: flex; 
+	align-items: left; 
+}
+
+textarea, #userfield, #passfield, #id_password, #id_button, #id_age, #id_rating{
+	display: block;
+	box-sizing: padding-box;
+	overflow: hidden;
+	padding: 5px;
+	height: 33px;
+	width: 500px;
+	font-size: 14px;
+	margin: 10px auto;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: .25rem;
+}
+
+textarea[name=title], textarea[name=book] {
+    height: 33px
+}
+
+
+textarea[name=analysis], textarea[name=passage], textarea[name=id_user_comment] {
+	height: auto;
+}
+
+#id_picture{
+	border: 0;
+}
+
+#id_button {
+	transition-duration: 0.4s;
+	background-color: white;
+	color: #292b2c;
+}
+
+#id_button:hover {
+	background-color: #292b2c;
+	color: white;
+}
+
+#id_user_comment{
+	height: auto;
+}
